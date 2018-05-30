@@ -6,16 +6,20 @@
  * Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
  * graphic logo is a trademark of OpenMRS Inc.
  */
-import React from 'react'
-import {Route} from 'react-router'
-import App from './components/App'
+import React from 'react';
+import { Route, Switch } from 'react-router-dom';
+import Header from './components/header';
+import BreadCrumb from './components/breadCrumb';
+import App from './components/App';
 
-export default (store) => {
-  // combine store and onEnter if you need to fire an action when going to a route. Example:
-  //   onEnter={ (nextState) => {store.dispatch(loadPatientAction(nextState.params.patientUuid)} }
+const Routes = store => (
+  <div>
+    <Header />
+    <BreadCrumb name="Notifications" />
+    <Switch>
+      <Route path="/" component={App} />
+    </Switch>
+  </div>
+);
 
-  return (
-    <Route path="/" component={App}>
-    </Route>
-  );
-}
+export default Routes;

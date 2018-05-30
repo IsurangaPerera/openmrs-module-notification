@@ -7,19 +7,23 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 import React from 'react';
-import {render} from 'react-dom';
-import {Router, Route, hashHistory} from 'react-router'
-import {Provider} from 'react-redux'
+import { render } from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
 
-import createStore from './redux-store'
-import routes from './routes'
+import createStore from './redux-store';
+import routes from './routes';
 
-let store = createStore();
+import '../../node_modules/toastr/build/toastr.css';
 
-render((
-         <Provider store={store}>
-           <Router history={hashHistory}>
-             {routes(store)}
-           </Router>
-         </Provider>
-       ), document.getElementById('app'));
+const store = createStore();
+
+render(
+  (
+    <Provider store={store}>
+      <BrowserRouter>
+        {routes(store)}
+      </BrowserRouter>
+    </Provider>
+  ), document.getElementById('app'),
+);

@@ -7,13 +7,14 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 import React from 'react';
+import SubscriptionTable from './subscriptionTable';
 
 export default class App extends React.Component {
   render() {
     return (
-      <div>
-        <h1>Hello, world</h1>
+      <div id="body-wrapper">
+        <SubscriptionTable />
       </div>
-    )
+    );
   }
 }
