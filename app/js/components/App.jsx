@@ -8,15 +8,13 @@
  */
 import React from 'react';
 import SubscriptionTable from './subscriptionTable';
-import SubscriptionEntry from './subscriptionEntry';
 
 export default class App extends React.Component {
   render() {
     return (
-      <SubscriptionEntry />
-      /* <div id="body-wrapper">
+      <div id="body-wrapper">
         <SubscriptionTable />
-      </div> */
+      </div>
     );
   }
 }

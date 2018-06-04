@@ -139,6 +139,19 @@ plugins.push(new HtmlWebpackPlugin({
 }));
 
 plugins.push(new CopyWebpackPlugin([{
+  from: './app/subscriptions.html',
+}]));
+
+plugins.push(new CopyWebpackPlugin([{
+  from: './app/edit.html',
+}]));
+
+plugins.push(new HtmlWebpackPlugin({
+  template: './app/subscriptions.html',
+  inject: 'body',
+}));
+
+plugins.push(new CopyWebpackPlugin([{
   from: './app/manifest.webapp',
 }]));
 

@@ -10,14 +10,20 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Header from './components/header';
 import BreadCrumb from './components/breadCrumb';
-import App from './components/App';
+import SubscriptionTable from './components/subscriptionTable';
+import SubscriptionEntry from './components/subscriptionEntry';
+import PatientEntry from './components/patientEntry';
+import UrlHelper from '../utilities/urlHelper';
 
+const urlHelper = new UrlHelper();
 const Routes = store => (
   <div>
     <Header />
     <BreadCrumb name="Notifications" />
     <Switch>
-      <Route path="/" component={App} />
+      <Route path={`${urlHelper.owaPath()}/index.html`} component={SubscriptionTable} />
+      <Route path={`${urlHelper.owaPath()}/subscriptions.html`} component={SubscriptionEntry} />
+      <Route path={`${urlHelper.owaPath()}/edit.html`} component={PatientEntry} />
     </Switch>
   </div>
 );

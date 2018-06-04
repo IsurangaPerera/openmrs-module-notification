@@ -6,24 +6,24 @@ import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
-import { connect } from "react-redux";
 import { withStyles } from "@material-ui/core/styles/index";
+import { connect } from "react-redux";
 
 const columnData = [
   {
-    id: 'name', numeric: false, disablePadding: true, label: 'Name',
+    id: 'pid', numeric: false, disablePadding: true, label: 'ID',
   },
   {
-    id: 'event-type', numeric: true, disablePadding: false, label: 'Event Type',
+    id: 'name', numeric: true, disablePadding: false, label: 'Name',
   },
   {
-    id: 'active', numeric: true, disablePadding: false, label: 'Active',
+    id: 'gender', numeric: true, disablePadding: false, label: 'Gender',
   },
   {
-    id: 'date-created', numeric: true, disablePadding: false, label: 'Date Created',
+    id: 'age', numeric: true, disablePadding: false, label: 'Age',
   },
   {
-    id: 'action', numeric: true, disablePadding: false, label: '',
+    id: 'reg', numeric: true, disablePadding: false, label: 'Registration Date',
   },
 ];
 
@@ -38,7 +38,7 @@ const styles = theme => ({
   },
 });
 
-class SubscriptionTableHead extends React.Component {
+class PatientTableHead extends React.Component {
     createSortHandler = property => (event) => {
       this.props.onRequestSort(event, property);
     };
@@ -87,7 +87,7 @@ class SubscriptionTableHead extends React.Component {
     }
 }
 
-SubscriptionTableHead.propTypes = {
+PatientTableHead.propTypes = {
   classes: PropTypes.object.isRequired,
   numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
@@ -103,4 +103,4 @@ const mapStateToProps = (state) => {
 const actionCreators = {
 };
 
-export default connect(mapStateToProps, actionCreators)(withStyles(styles)(SubscriptionTableHead));
+export default connect(mapStateToProps, actionCreators)(withStyles(styles)(PatientTableHead));

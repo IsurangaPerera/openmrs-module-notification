@@ -2,7 +2,6 @@ import { connect } from "react-redux";
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -10,25 +9,22 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
-import SubscriptionTableHead from './SubscriptionTableHead';
-import SubscriptionTableToolbar from './SubscriptionTableToolbar';
-import UrlHelper from '../../../utilities/urlHelper';
+import PatientTableToolbar from "./PatientTableToolbar";
+import PatientTableHead from "./PatientTableHead";
 
 let counter = 0;
-function createData(name, eventType, active, dateCreated, op) {
+function createData(pid, name, gender, age, reg) {
   counter += 1;
   return {
-    id: counter, name, eventType, active, dateCreated, op,
+    id: counter, pid, name, gender, age, reg,
   };
 }
+
 
 const styles = theme => ({
   root: {
     width: '100%',
     marginTop: theme.spacing.unit * 3,
-  },
-  button: {
-    margin: theme.spacing.unit,
   },
   table: {
     minWidth: 800,
@@ -46,7 +42,7 @@ const styles = theme => ({
   },
 });
 
-class SubscriptionTable extends React.Component {
+class PatientTable extends React.Component {
   constructor(props, context) {
     super(props, context);
 
@@ -77,8 +73,6 @@ class SubscriptionTable extends React.Component {
       page: 0,
       rowsPerPage: 5,
     };
-
-    this.urlHelper = new UrlHelper();
   }
 
     handleRequestSort = (event, property) => {
@@ -144,80 +138,72 @@ class SubscriptionTable extends React.Component {
       const emptyRows = rowsPerPage - Math.min(rowsPerPage, (data.length - (page * rowsPerPage)));
 
       return (
-        <div id="body-wrapper">
-          <Paper className={classes.root}>
-            <SubscriptionTableToolbar numSelected={selected.length} />
-            <div className={classes.tableWrapper}>
-              <Table className={classes.table} aria-labelledby="tableTitle">
-                <SubscriptionTableHead
-                  numSelected={selected.length}
-                  order={order}
-                  orderBy={orderBy}
-                  onSelectAllClick={this.handleSelectAllClick}
-                  onRequestSort={this.handleRequestSort}
-                  rowCount={data.length}
-                />
-                <TableBody>
-                  {data.slice(page * rowsPerPage, ((page * rowsPerPage) + rowsPerPage)).map((n) => {
-                    const isSelected = this.isSelected(n.id);
-                    return (
-                      <TableRow
-                        hover
-                        onClick={event => this.handleClick(event, n.id)}
-                        role="checkbox"
-                        aria-checked={isSelected}
-                        tabIndex={-1}
-                        key={n.id}
-                        selected={isSelected}
-                      >
-                        <TableCell padding="checkbox" className={classes.body}>
-                          <Checkbox checked={isSelected} />
-                        </TableCell>
-                        <TableCell component="th" scope="row" padding="none" className={classes.body}>
-                          {n.name}
-                        </TableCell>
-                        <TableCell numeric className={classes.body}>{n.eventType}</TableCell>
-                        <TableCell numeric className={classes.body}>{n.active}</TableCell>
-                        <TableCell numeric className={classes.body}>{n.dateCreated}</TableCell>
-                        <TableCell numeric className={classes.body}>
-                          <Link
-                            to={`${this.urlHelper.owaPath()}/subscriptions.html`}
-                            className={`${this.urlHelper.owaPath()}/subscriptions.html`}>
-                          Edit
-                          </Link>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                  {emptyRows > 0 && (
-                    <TableRow style={{ height: 49 * emptyRows }}>
-                      <TableCell colSpan={6} />
+        <Paper className={classes.root}>
+          <PatientTableToolbar numSelected={selected.length} />
+          <div className={classes.tableWrapper}>
+            <Table className={classes.table} aria-labelledby="tableTitle">
+              <PatientTableHead
+                numSelected={selected.length}
+                order={order}
+                orderBy={orderBy}
+                onSelectAllClick={this.handleSelectAllClick}
+                onRequestSort={this.handleRequestSort}
+                rowCount={data.length}
+              />
+              <TableBody>
+                {data.slice(page * rowsPerPage, ((page * rowsPerPage) + rowsPerPage)).map((n) => {
+                  const isSelected = this.isSelected(n.id);
+                  return (
+                    <TableRow
+                      hover
+                      onClick={event => this.handleClick(event, n.id)}
+                      role="checkbox"
+                      aria-checked={isSelected}
+                      tabIndex={-1}
+                      key={n.id}
+                      selected={isSelected}
+                    >
+                      <TableCell padding="checkbox">
+                        <Checkbox checked={isSelected} />
+                      </TableCell>
+                      <TableCell component="th" scope="row" padding="none" className={classes.body}>
+                        {n.pid}
+                      </TableCell>
+                      <TableCell numeric className={classes.body}>{n.name}</TableCell>
+                      <TableCell numeric className={classes.body}>{n.gender}</TableCell>
+                      <TableCell numeric className={classes.body}>{n.age}</TableCell>
+                      <TableCell numeric className={classes.body}>{n.reg}</TableCell>
                     </TableRow>
-                  )}
-                </TableBody>
-              </Table>
-            </div>
-            <TablePagination
-              component="div"
-              count={data.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              backIconButtonProps={{
-                'aria-label': 'Previous Page',
-              }}
-              nextIconButtonProps={{
-                'aria-label': 'Next Page',
-              }}
-              onChangePage={this.handleChangePage}
-              onChangeRowsPerPage={this.handleChangeRowsPerPage}
-            />
-          </Paper>
-        </div>
+                  );
+                })}
+                {emptyRows > 0 && (
+                  <TableRow style={{ height: 49 * emptyRows }}>
+                    <TableCell colSpan={6} />
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+          <TablePagination
+            component="div"
+            count={data.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            backIconButtonProps={{
+              'aria-label': 'Previous Page',
+            }}
+            nextIconButtonProps={{
+              'aria-label': 'Next Page',
+            }}
+            onChangePage={this.handleChangePage}
+            onChangeRowsPerPage={this.handleChangeRowsPerPage}
+          />
+        </Paper>
       );
     }
 }
 
-SubscriptionTable.propTypes = {
+PatientTable.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
@@ -227,4 +213,4 @@ const mapStateToProps = (state) => {
 const actionCreators = {
 };
 
-export default connect(mapStateToProps, actionCreators)(withStyles(styles)(SubscriptionTable));
+export default connect(mapStateToProps, actionCreators)(withStyles(styles)(PatientTable));

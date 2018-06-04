@@ -1,10 +1,15 @@
 import { connect } from "react-redux";
-import AddIcon from "@material-ui/icons/Add";
 import React from 'react';
+import { Link } from "react-router-dom";
 import { Button, Checkbox, Col, ControlLabel, Form, FormControl, FormGroup, Row } from "react-bootstrap";
 import ChipsArray from './Chips';
+import UrlHelper from "../../../utilities/urlHelper";
 
 class SubscriptionEntry extends React.Component {
+  constructor(props, context) {
+    super(props, context);
+    this.urlHelper = new UrlHelper();
+  }
   render() {
     return (
       <div id="body-wrapper">
@@ -50,23 +55,18 @@ class SubscriptionEntry extends React.Component {
             </FormGroup>
 
             <FormGroup controlId="formControlsSelect">
-              <Col smOffset={2} sm={1}>
-                <Button>Add Patients(s)</Button>
+              <Col smOffset={2} sm={2}>
+                <Link
+                  to={`${this.urlHelper.owaPath()}/edit.html`}
+                  className={`${this.urlHelper.owaPath()}/edit.html`}>
+                        Add Patient(s)
+                </Link>
               </Col>
             </FormGroup>
 
             <FormGroup>
               <Col componentClass={ControlLabel} sm={2}>
                                 Active
-              </Col>
-              <Col sm={2}>
-                <Checkbox />
-              </Col>
-            </FormGroup>
-
-            <FormGroup>
-              <Col componentClass={ControlLabel} sm={2}>
-                                Retired
               </Col>
               <Col sm={2}>
                 <Checkbox />
