@@ -58,7 +58,7 @@ will need the `APP_ENTRY_POINT` entry in your `config.json` file:
 ```js
 {
   "LOCAL_OWA_FOLDER": "/home/isurangaperera/openmrs/platform/owa",
-  "APP_ENTRY_POINT": "http://localhost:8080/openmrs/owa/openmrs-owa-notification/index.html"
+  "APP_ENTRY_POINT": openmrs-module-notification
 }
 ```
 Run Browsersync as follows:

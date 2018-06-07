@@ -28,7 +28,7 @@ const WebpackOnBuildPlugin = require('on-build-webpack');
 
 const nodeModulesDir = path.resolve(__dirname, '../node_modules');
 
-const THIS_APP_ID = 'openmrs-owa-notification';
+const THIS_APP_ID = 'openmrs-module-notification';
 
 const plugins = [];
 const nodeModules = {};
@@ -53,7 +53,7 @@ const getConfig = function () {
 	    // create file with defaults if not found
 	    config = {
 	      LOCAL_OWA_FOLDER: '/home/isurangaperera/openmrs/platform/owa/',
-	      APP_ENTRY_POINT: 'http://localhost:8080/openmrs/owa/openmrs-owa-notification/index.html',
+	      APP_ENTRY_POINT: 'http://localhost:8080/openmrs/owa/openmrs-module-notification/index.html',
 	    };
 
 	    fs.writeFile('config.json', JSON.stringify(config));
