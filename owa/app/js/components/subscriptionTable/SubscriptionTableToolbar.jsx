@@ -89,10 +89,4 @@ SubscriptionTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-const mapStateToProps = (state) => {
-};
-
-const actionCreators = {
-};
-
-export default connect(mapStateToProps, actionCreators)(withStyles(toolbarStyles)(SubscriptionTableToolbar));
+export default withStyles(toolbarStyles)(SubscriptionTableToolbar);

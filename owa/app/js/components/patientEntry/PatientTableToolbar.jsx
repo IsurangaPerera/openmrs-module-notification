@@ -81,10 +81,4 @@ PatientTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-const mapStateToProps = (state) => {
-};
-
-const actionCreators = {
-};
-
-export default connect(mapStateToProps, actionCreators)(withStyles(toolbarStyles)(PatientTableToolbar));
+export default withStyles(toolbarStyles)(PatientTableToolbar);
