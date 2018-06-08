@@ -1,4 +1,3 @@
-import { connect } from "react-redux";
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -194,10 +193,4 @@ PatientTable.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = (state) => {
-};
-
-const actionCreators = {
-};
-
-export default connect(mapStateToProps, actionCreators)(withStyles(styles)(PatientTable));
+export default withStyles(styles)(PatientTable);

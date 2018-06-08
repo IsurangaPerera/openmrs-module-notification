@@ -1,4 +1,3 @@
-import { connect } from "react-redux";
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -221,10 +220,4 @@ SubscriptionTable.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = (state) => {
-};
-
-const actionCreators = {
-};
-
-export default connect(mapStateToProps, actionCreators)(withStyles(styles)(SubscriptionTable));
+export default withStyles(styles)(SubscriptionTable);

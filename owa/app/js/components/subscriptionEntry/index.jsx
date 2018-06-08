@@ -1,4 +1,3 @@
-import { connect } from "react-redux";
 import React from 'react';
 import { Link } from "react-router-dom";
 import { Button, Checkbox, Col, ControlLabel, Form, FormControl, FormGroup, Row } from "react-bootstrap";
@@ -109,10 +108,4 @@ class SubscriptionEntry extends React.Component {
 SubscriptionEntry.propTypes = {
 };
 
-const mapStateToProps = (state) => {
-};
-
-const actionCreators = {
-};
-
-export default connect(mapStateToProps, actionCreators)(SubscriptionEntry);
+export default SubscriptionEntry;

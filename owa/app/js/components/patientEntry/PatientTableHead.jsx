@@ -7,7 +7,6 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
 import { withStyles } from "@material-ui/core/styles/index";
-import { connect } from "react-redux";
 
 const columnData = [
   {
@@ -97,10 +96,4 @@ PatientTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired,
 };
 
-const mapStateToProps = (state) => {
-};
-
-const actionCreators = {
-};
-
-export default connect(mapStateToProps, actionCreators)(withStyles(styles)(PatientTableHead));
+export default withStyles(styles)(PatientTableHead);

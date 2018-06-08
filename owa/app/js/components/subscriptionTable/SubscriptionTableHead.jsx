@@ -6,7 +6,6 @@ import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
-import { connect } from "react-redux";
 import { withStyles } from "@material-ui/core/styles/index";
 
 const columnData = [
@@ -97,10 +96,4 @@ SubscriptionTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired,
 };
 
-const mapStateToProps = (state) => {
-};
-
-const actionCreators = {
-};
-
-export default connect(mapStateToProps, actionCreators)(withStyles(styles)(SubscriptionTableHead));
+export default withStyles(styles)(SubscriptionTableHead);
