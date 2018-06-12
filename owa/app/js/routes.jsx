@@ -19,7 +19,6 @@ const urlHelper = new UrlHelper();
 const Routes = store => (
   <div>
     <Header />
-    <BreadCrumb name="Notifications" />
     <Switch>
       <Route path={`${urlHelper.owaPath()}/index.html`} component={SubscriptionTable} />
       <Route path={`${urlHelper.owaPath()}/subscriptions.html`} component={SubscriptionEntry} />

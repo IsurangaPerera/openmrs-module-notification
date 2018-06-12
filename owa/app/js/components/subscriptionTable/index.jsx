@@ -143,7 +143,7 @@ class SubscriptionTable extends React.Component {
       const emptyRows = rowsPerPage - Math.min(rowsPerPage, (data.length - (page * rowsPerPage)));
 
       return (
-        <div id="body-wrapper">
+        <div id="body-wrapper" className="body-wrapper">
           <Paper className={classes.root}>
             <SubscriptionTableToolbar numSelected={selected.length} />
             <div className={classes.tableWrapper}>

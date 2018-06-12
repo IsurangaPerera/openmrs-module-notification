@@ -72,13 +72,6 @@ class SubscriptionTableToolbar extends React.Component {
             </Tooltip>
           )}
         </div>
-        <div className={this.props.classes.actions}>
-          <Tooltip title="Toggle Retired">
-            <IconButton aria-label="Toggle Retired">
-              <AddIcon />
-            </IconButton>
-          </Tooltip>
-        </div>
       </Toolbar>
     );
   }

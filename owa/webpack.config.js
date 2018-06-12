@@ -165,7 +165,7 @@ const webpackConfig = {
   quiet: false,
   entry: {
 	  app: `${__dirname}/app/js/openmrs-owa-notification`,
-	  css: `${__dirname}/app/css/openmrs-owa-notification.css`,
+	  css: `${__dirname}/app/css/openmrs-owa-notification.scss`,
 	  vendor: [
 
 
@@ -196,8 +196,14 @@ const webpackConfig = {
 	    test: /\.css$/,
 	    loader: 'style-loader!css-loader',
     }, {
+        test: /\.scss$/,
+        loader: 'style-loader!css-loader!sass-loader'
+    }, {
 	    test: /\.(png|jpg|jpeg|gif|svg)$/,
 	    loader: 'url',
+    }, {
+        test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'file-loader',
     }, {
 	    test: /\.html$/,
 	    loader: 'html',
