@@ -21,6 +21,125 @@ $max-page-width: 1300px;
   }
 }
 
+.reg-wrapper {
+  margin: 0px auto;
+  height: 100%;
+
+  .inline-element, select, input, button {
+    display: inline-block;
+  }
+  select {
+    height: 35px;
+  }
+  header {
+    color: $lightGray;
+    height: 52px;
+    border-radius: 0;
+    line-height: 1em;
+    background: $bahmniSecondaryColor;
+    .header-logo {
+      display: block;
+      width: 35px;
+      margin: 8px auto;
+      img {
+        display: block;
+        width: 35px;
+        border-radius: 17px;
+        box-shadow: 0 8px 6px -7px $black;
+      }
+    }
+    ul {
+      //float:right;
+      li {
+        //margin:11px 15px 10px 0px;
+        display: inline-block;
+        a {
+          color: $white;
+          font-weight: bold;
+          cursor: pointer;
+          text-decoration: none;
+          .nav-link {
+            padding-left: 2px;
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+      }
+    }
+  }
+  .reg-search-wrapper {
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid $lightGray;
+    background: $white;
+    border-radius: 3px;
+    .reg-search {
+      margin-bottom: 10px;
+      @include clearfix;
+      .search-seperator-l {
+        //@include column(5);
+        border-right: 2px dotted $lightGray;
+        select {
+          width: 80px;
+          min-width: 80px;
+          padding: 0 10px !important;
+        }
+      }
+      .search-seperator-r {
+        padding: 0px 0px 10px 20px;
+        input {
+          margin-right: 5px;
+        }
+        .reg-srch-btn {
+          margin-top: 25px;
+        }
+      }
+    }
+    .note-container {
+      text-align: left;
+      .note {
+        padding: 6px 10px 6px 10px;
+        .text {
+          p {
+            max-width: 100%;
+            top: 0px;
+            margin-left: 0
+          }
+        }
+      }
+    }
+  }
+}
+
+/*** search page css end ***/
+.apps {
+  text-align: center;
+  li {
+    display: inline-block;
+    a {
+      padding: 20px 10px;
+      width: 130px;
+      max-height: 90px;
+      vertical-align: top;
+      line-height: 1.3em;
+      margin: 10px;
+      text-align: center;
+      font-size: 1.3em;
+      &:hover {
+        background: $lightestGray;
+        border: 1px solid $lightGray;
+      }
+      i {
+        display: block;
+        font-size: 50px;
+        margin: 0px auto;
+        padding: 10px;
+      }
+    }
+  }
+}
+
 .body-wrapper{
   padding: 0px 40px 40px 40px;
 }
