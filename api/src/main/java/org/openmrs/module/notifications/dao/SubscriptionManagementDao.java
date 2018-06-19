@@ -6,14 +6,14 @@ import org.openmrs.module.notifications.entity.Subscription;
 import java.util.List;
 
 public interface SubscriptionManagementDao {
-
-    /**
-     * Save / Update Subscription
-     *
-     * @param subscription {@link Subscription}
-     * @return {@link Subscription}
-     */
-    Subscription saveSubscription(Subscription subscription);
-
-    List getAllSubscriptions(User user);
+	
+	/**
+	 * Save / Update Subscription
+	 *
+	 * @param subscription {@link Subscription}
+	 * @return {@link Subscription}
+	 */
+	Subscription saveSubscription(Subscription subscription);
+	
+	List getAllSubscriptions(User user);
 }

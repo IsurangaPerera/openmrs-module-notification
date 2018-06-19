@@ -7,19 +7,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-
 @Transactional
 public interface SubscriptionManagementService extends OpenmrsService {
-
-    /**
-     * Save / update subscription
-     *
-     * @param subscription {@link Subscription}
-     * @return {@link Subscription}
-     */
-    @Authorized(value = { "Edit Subscriptions" }, requireAll = true)
-    Subscription saveSubscription(Subscription subscription);
-
-    @Authorized(value = { "Get Subscriptions" }, requireAll = true)
-    List<Subscription> getAllSubscriptions();
+	
+	/**
+	 * Save / update subscription
+	 *
+	 * @param subscription {@link Subscription}
+	 * @return {@link Subscription}
+	 */
+	@Authorized(value = { "Edit Subscriptions" }, requireAll = true)
+	Subscription saveSubscription(Subscription subscription);
+	
+	@Authorized(value = { "Get Subscriptions" }, requireAll = true)
+	List<Subscription> getAllSubscriptions();
 }
