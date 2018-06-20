@@ -1,0 +1,26 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+    <changeSet author="Isuranga Perera" id="subscription_management_module_19062018_1">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="event"/>
+            </not>
+        </preConditions>
+        <comment>
+            Create event table
+        </comment>
+        <createTable tableName="event">
+            <column autoIncrement="true" name="event_id" type="int">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

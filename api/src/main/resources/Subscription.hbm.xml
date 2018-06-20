@@ -34,14 +34,9 @@
 
         <property name="name" type="java.lang.String" column="subscription_name" length="30"/>
         <property name="description" type="java.lang.String" column="description" length="200"/>
-        <property name="oid" type="int" column="oid"/>
+        <many-to-one name="user" class="org.openmrs.User" not-null="true" column="user_id"/>
 
-        <set name="patients" cascade="save-update" inverse="true">
-            <key column="patient"/>
-            <one-to-many class="org.openmrs.Patient"/>
-        </set>
-
-        <many-to-one name="event" class="org.openmrs.module.notifications.entity.Event" column="event" lazy="false"/>
+        <many-to-one name="event" class="org.openmrs.module.notifications.entity.Event" column="event_id" lazy="false"/>
 
     </class>
 </hibernate-mapping>

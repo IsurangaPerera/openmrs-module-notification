@@ -35,10 +35,12 @@
     <patient_identifier patient_identifier_id="2" patient_id="4" identifier="1235" identifier_type="1" preferred="1" location_id="12348" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" uuid="1ac98ec8-e9d9-4626-998c-c795c2f0aa9e"/>
 
     <privilege privilege="Get Subscriptions" description="Able to get all subscriptions" uuid="3480cb6d-c291-66c8-8d3a-96dc33d109fb"/>
+    <privilege privilege="Get Event" description="Able to get an event" uuid="3480cb6d-c291-66c8-8d3a-96dc33d109fa"/>
 
     <role role="InPatient-Admin" description="Manage In patient setting" uuid="9480cddd-c291-46c8-fgty-96dc33d109fb"/>
 
     <role_privilege role="InPatient-Admin" privilege="Get Subscriptions"/>
+    <role_privilege role="InPatient-Admin" privilege="Get Event"/>
 
     <users user_id="190" person_id="567" system_id="1-8" username="test-user" password="4a1750c8607d0fa237de36c6305715c223415189" salt="c788c6ad82a157b712392ca695dfcf2eed193d7f" secret_question="" creator="1" date_created="2005-01-01 00:00:00.0" changed_by="1" date_changed="2007-09-20 21:54:12.0" retired="false" retire_reason="" uuid="1010d442-e134-11de-babe-001e378eb670"/>
     <users user_id="120" person_id="678" system_id="1-8" username="normal-user" password="62a9238a82b866a3e9e9ce8245ac230bf98bce2d" salt="c788c6ad82a157b712392ca695dfcf2eed193d7f" secret_question="" creator="1" date_created="2005-01-01 00:00:00.0" changed_by="1" date_changed="2007-09-20 21:54:12.0" retired="false" retire_reason="" uuid="1010d442-e134-11de-babe-001e378ev670"/>
@@ -48,8 +50,10 @@
     <person person_id="567" gender="" birthdate="1975-06-30" birthdate_estimated="false" dead="false" creator="1" date_created="2005-01-01 00:00:00.0" changed_by="1" date_changed="2007-09-20 21:54:12.0" voided="false" void_reason="" uuid="6adb7c42-cfd2-4301-b53b-ff17c5654ff7"/>
     <person person_id="678" gender="" birthdate="1975-06-30" birthdate_estimated="false" dead="false" creator="1" date_created="2005-01-01 00:00:00.0" changed_by="1" date_changed="2007-09-20 21:54:12.0" voided="false" void_reason="" uuid="6adb7c42-cfd2-4301-b53b-ff17c5654dd7"/>
 
-    <event name="event01" description="Event 01" />
-    <event name="event02" description="Event 02" />
-    <event name="event03" description="Event 03" />
+    <event id="1" name="event01" description="Event 01" />
+    <event id="2" name="event02" description="Event 02" />
+    <event id="3" name="event03" description="Event 03" />
+
+    <subscription subscription_id="1" subscription_name="On Patient Arrival" description="Notify when a patient arrives" date_created="2005-01-01 00:00:00.0" changed_by="1" date_changed="2007-09-20 21:54:12.0" voided="false" void_reason="" user_id="190" event_id="1"/>
 
 </dataset>

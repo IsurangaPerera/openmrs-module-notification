@@ -53,7 +53,7 @@ public class SubscriptionManagementActivator implements ModuleActivator {
 	 * @see ModuleActivator#stopped()
 	 */
 	public void stopped() {
-		log.info("bedmanagement Module stopped");
+		log.info("notifications Module stopped");
 	}
 	
 }

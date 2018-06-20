@@ -27,6 +27,6 @@ public class SubscriptionManagementDaoImpl implements SubscriptionManagementDao 
 	@Override
 	public List<Subscription> getAllSubscriptions(User user) {
 		Session session = sessionFactory.getCurrentSession();
-		return session.createQuery("from Subscription where oid =:oid").setParameter("oid", user.getId()).list();
+		return session.createQuery("from Subscription where user_id =:uid").setParameter("uid", user.getId()).list();
 	}
 }

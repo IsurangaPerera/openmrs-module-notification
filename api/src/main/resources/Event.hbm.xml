@@ -5,11 +5,11 @@
 <hibernate-mapping>
     <class name="org.openmrs.module.notifications.entity.Event" table="event">
 
-        <id name="id" type="int" column="event_id" unsaved-value="0">
+        <id name="id" type="int" column="id" unsaved-value="0">
             <generator class="native"/>
         </id>
 
-        <property name="name" type="java.lang.String" column="event_name" length="30"/>
+        <property name="name" type="java.lang.String" column="name" length="30"/>
         <property name="description" type="java.lang.String" column="description" length="200"/>
 
     </class>

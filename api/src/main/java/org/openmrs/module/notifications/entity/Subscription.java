@@ -1,9 +1,7 @@
 package org.openmrs.module.notifications.entity;
 
 import org.openmrs.BaseOpenmrsData;
-import org.openmrs.Patient;
-
-import java.util.Set;
+import org.openmrs.User;
 
 public class Subscription extends BaseOpenmrsData {
 	
@@ -13,11 +11,9 @@ public class Subscription extends BaseOpenmrsData {
 	
 	private String description;
 	
-	private Set<Patient> patients;
-	
 	private Event event;
 	
-	private Integer oid;
+	private User user;
 	
 	@Override
 	public Integer getId() {
@@ -45,14 +41,6 @@ public class Subscription extends BaseOpenmrsData {
 		this.description = description;
 	}
 	
-	public Set<Patient> getPatients() {
-		return patients;
-	}
-	
-	public void setPatients(Set<Patient> patients) {
-		this.patients = patients;
-	}
-	
 	public Event getEvent() {
 		return event;
 	}
@@ -61,11 +49,11 @@ public class Subscription extends BaseOpenmrsData {
 		this.event = event;
 	}
 	
-	public Integer getOwner() {
-		return oid;
+	public User getUser() {
+		return user;
 	}
 	
-	public void setOwner(Integer oid) {
-		this.oid = oid;
+	public void setUser(User user) {
+		this.user = user;
 	}
 }
