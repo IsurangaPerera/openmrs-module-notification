@@ -1,4 +1,4 @@
-# Bed Management module
+# Notifications Management module
 ## Overview
 The Notification Management module brings in the data model, DAO entities, services and REST API layers for managing subscriptions, managing events and all other backend entities that relates to Notifications Management.
 This module is primarily used in the [Bahmni distribution](https://github.com/Bahmni/openmrs-distro-bahmni) of of OpenMRS.
