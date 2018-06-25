@@ -13,7 +13,7 @@
             Create event table
         </comment>
         <createTable tableName="event">
-            <column autoIncrement="true" name="event_id" type="int">
+            <column autoIncrement="true" name="id" type="int">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="name" type="varchar(255)">
@@ -21,6 +21,97 @@
             </column>
             <column name="description" type="varchar(255)"/>
         </createTable>
+    </changeSet>
+
+    <changeSet author="Isuranga Perera" id="subscription_management_module_19062018_2">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="subscription"/>
+            </not>
+        </preConditions>
+        <comment>
+            Create subscription table
+        </comment>
+        <createTable tableName="subscription">
+            <column autoIncrement="true" name="subscription_id" type="int">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="subscription_name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(255)"/>
+            <column name="date_created" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="changed_by" type="int"/>
+            <column name="date_changed" type="datetime"/>
+            <column name="voided" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="void_reason" type="varchar(255)" defaultValue="null"/>
+            <column name="user_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="event_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint constraintName="subscription_creator_fk"
+                                 baseTableName="subscription" baseColumnNames="user_id"
+                                 referencedTableName="users"
+                                 referencedColumnNames="user_id"/>
+        <addForeignKeyConstraint constraintName="subscription_changed_by_fk"
+                                 baseTableName="subscription" baseColumnNames="changed_by"
+                                 referencedTableName="users"
+                                 referencedColumnNames="user_id"/>
+        <addForeignKeyConstraint constraintName="subscription_event_by_fk"
+                                 baseTableName="subscription" baseColumnNames="event_id"
+                                 referencedTableName="event"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet author="Isuranga Perera" id="subscription_management_module_19062018_3">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">select count(*) from privilege where privilege='Edit Subscriptions'</sqlCheck>
+        </preConditions>
+        <insert tableName="privilege">
+            <column name="privilege" value="Edit Subscriptions"/>
+            <column name="description" value="Able to add/modify subscriptions"/>
+            <column name="uuid" valueComputed="uuid()"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Isuranga Perera" id="subscription_management_module_19062018_4">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">select count(*) from privilege where privilege='Get Subscriptions'</sqlCheck>
+        </preConditions>
+        <insert tableName="privilege">
+            <column name="privilege" value="Get Subscriptions"/>
+            <column name="description" value="Able to get subscriptions"/>
+            <column name="uuid" valueComputed="uuid()"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Isuranga Perera" id="subscription_management_module_19062018_5">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">select count(*) from privilege where privilege='Edit Event'</sqlCheck>
+        </preConditions>
+        <insert tableName="privilege">
+            <column name="privilege" value="Edit Event"/>
+            <column name="description" value="Able to add/modify events"/>
+            <column name="uuid" valueComputed="uuid()"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Isuranga Perera" id="subscription_management_module_19062018_6">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">select count(*) from privilege where privilege='Get Event'</sqlCheck>
+        </preConditions>
+        <insert tableName="privilege">
+            <column name="privilege" value="Get Event"/>
+            <column name="description" value="Able to get events"/>
+            <column name="uuid" valueComputed="uuid()"/>
+        </insert>
     </changeSet>
 
 </databaseChangeLog>
