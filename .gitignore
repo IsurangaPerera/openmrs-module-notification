@@ -4,3 +4,6 @@ dist
 config.json
 .idea
 **/*.zip
+**/target/
+**/*.iml
+omod/omod.iml

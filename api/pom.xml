@@ -53,17 +53,6 @@
         <!-- End OpenMRS core -->
 
         <dependency>
-            <groupId>org.ict4h</groupId>
-            <artifactId>atomfeed-server</artifactId>
-            <version>${atomfeed.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.ict4h.openmrs</groupId>
-            <artifactId>openmrs-atomfeed-common</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.openmrs.module</groupId>
             <artifactId>webservices.rest-omod</artifactId>
             <version>${webservicesRestModuleVersion}</version>
