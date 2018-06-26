@@ -3,7 +3,7 @@ package org.openmrs.module.notifications.entity;
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.Patient;
 
-public class SubscribedPatient extends BaseOpenmrsData {
+public class SubscriptionPatientAssignment extends BaseOpenmrsData {
 	
 	private Integer id;
 	
@@ -11,14 +11,12 @@ public class SubscribedPatient extends BaseOpenmrsData {
 	
 	private Subscription subscription;
 	
-	@Override
 	public Integer getId() {
 		return id;
 	}
 	
-	@Override
 	public void setId(Integer id) {
-		
+		this.id = id;
 	}
 	
 	public Patient getPatient() {

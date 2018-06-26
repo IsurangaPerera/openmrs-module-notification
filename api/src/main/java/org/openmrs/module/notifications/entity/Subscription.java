@@ -3,6 +3,8 @@ package org.openmrs.module.notifications.entity;
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.User;
 
+import java.util.Set;
+
 public class Subscription extends BaseOpenmrsData {
 	
 	private Integer id;
@@ -10,6 +12,8 @@ public class Subscription extends BaseOpenmrsData {
 	private String name;
 	
 	private String description;
+	
+	private Set<SubscriptionPatientAssignment> subscriptionPatientAssignment;
 	
 	private Event event;
 	
@@ -31,6 +35,14 @@ public class Subscription extends BaseOpenmrsData {
 	
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public Set<SubscriptionPatientAssignment> getSubscriptionPatientAssignment() {
+		return subscriptionPatientAssignment;
+	}
+	
+	public void setSubscriptionPatientAssignment(Set<SubscriptionPatientAssignment> subscriptionPatientAssignment) {
+		this.subscriptionPatientAssignment = subscriptionPatientAssignment;
 	}
 	
 	public String getDescription() {
