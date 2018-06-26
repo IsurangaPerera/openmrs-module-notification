@@ -114,4 +114,60 @@
         </insert>
     </changeSet>
 
+    <changeSet author="Isuranga Perera" id="subscription_management_module_26062018_1">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="subscription__patient_assignment_map"/>
+            </not>
+        </preConditions>
+        <comment>
+            Create subscription__patient_assignment_map table
+        </comment>
+        <createTable tableName="subscription__patient_assignment_map">
+            <column autoIncrement="true" name="subscription__patient_assignment_map_id" type="int">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="patient_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="subscription_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="uuid" type="char(38)"/>
+            <column name="creator" type="int" valueNumeric="1"/>
+            <column name="date_created" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="changed_by" type="int"/>
+            <column name="date_changed" type="datetime"/>
+            <column name="voided" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="voided_by" type="int"/>
+            <column name="date_voided" type="datetime"/>
+            <column name="void_reason" type="varchar(255)" defaultValue="null"/>
+
+        </createTable>
+        <addForeignKeyConstraint constraintName="patient_id_fk"
+                                 baseTableName="subscription__patient_assignment_map" baseColumnNames="patient_id"
+                                 referencedTableName="patient"
+                                 referencedColumnNames="patient_id"/>
+        <addForeignKeyConstraint constraintName="patient_id_fk"
+                                 baseTableName="subscription__patient_assignment_map" baseColumnNames="subscription_id"
+                                 referencedTableName="subscription"
+                                 referencedColumnNames="subscription_id"/>
+        <addUniqueConstraint tableName="subscription__patient_assignment_map"
+                             columnNames="uuid" constraintName="subscription_unique_uuid"/>
+        <addForeignKeyConstraint constraintName="subscription__patient_assignment_map_creator"
+                                 baseTableName="subscription__patient_assignment_map" baseColumnNames="creator"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
+        <addForeignKeyConstraint constraintName="subscription__patient_assignment_map_changed_by_fk"
+                                 baseTableName="subscription__patient_assignment_map" baseColumnNames="changed_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
+        <addForeignKeyConstraint constraintName="subscription__patient_assignment_map_voided_by_fk"
+                                 baseTableName="subscription__patient_assignment_map" baseColumnNames="voided_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
+
+    </changeSet>
+
 </databaseChangeLog>

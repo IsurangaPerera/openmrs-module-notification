@@ -3,11 +3,15 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="org.openmrs.module.notifications.entity.SubscribedPatient" table="subscribed_patient">
 
-        <id name="id" type="int" column="id" unsaved-value="0">
+    <class name="org.openmrs.module.notifications.entity.SubscriptionPatientAssignment" table="subscription_patient_assignment_map">
+
+        <id name="id" type="int" column="subscription_patient_assignment_map_id" unsaved-value="0">
             <generator class="native"/>
         </id>
+
+        <property name="uuid" type="java.lang.String"
+                  column="uuid" length="38" unique="true"/>
 
         <many-to-one name="creator" class="org.openmrs.User" lazy="no-proxy" />
 
@@ -29,8 +33,9 @@
         <property name="voidReason" type="java.lang.String"
                   column="void_reason" length="255" />
 
-        <many-to-one name="patient" class="org.openmrs.Patient" not-null="true" column="patient_id" />
+        <many-to-one name="patient" class="org.openmrs.Patient" not-null="true" column="patient_id"/>
         <many-to-one name="subscription" class="org.openmrs.module.notifications.entity.Subscription" not-null="true" column="subscription_id"/>
 
     </class>
+
 </hibernate-mapping>

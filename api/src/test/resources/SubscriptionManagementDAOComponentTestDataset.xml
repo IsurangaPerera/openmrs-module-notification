@@ -53,7 +53,15 @@
     <event id="1" name="event01" description="Event 01" />
     <event id="2" name="event02" description="Event 02" />
     <event id="3" name="event03" description="Event 03" />
+    <event id="4" name="event04" description="Event 04" />
+    <event id="5" name="event05" description="Event 05" />
 
     <subscription subscription_id="1" subscription_name="On Patient Arrival" description="Notify when a patient arrives" date_created="2005-01-01 00:00:00.0" changed_by="1" date_changed="2007-09-20 21:54:12.0" voided="false" void_reason="" user_id="190" event_id="1"/>
+    <subscription subscription_id="2" subscription_name="Lab Result Arrival" description="Notify when a lab report arrives" date_created="2005-01-01 00:00:00.0" changed_by="1" date_changed="2007-09-20 21:54:12.0" voided="false" void_reason="" user_id="190" event_id="1"/>
+    <subscription subscription_id="3" subscription_name="On Patient Arrival" description="Notify when a patient arrives" date_created="2005-01-01 00:00:00.0" changed_by="1" date_changed="2007-09-20 21:54:12.0" voided="false" void_reason="" user_id="190" event_id="1"/>
+
+    <subscription_patient_assignment_map subscription_patient_assignment_map_id="1" patient_id="3" subscription_id="1" date_created="2005-01-01 00:00:00.0" voided="false"/>
+    <subscription_patient_assignment_map subscription_patient_assignment_map_id="2" patient_id="4" subscription_id="1" date_created="2005-01-01 00:00:00.0" voided="false"/>
+    <subscription_patient_assignment_map subscription_patient_assignment_map_id="3" patient_id="5" subscription_id="1" date_created="2005-01-01 00:00:00.0" voided="false"/>
 
 </dataset>

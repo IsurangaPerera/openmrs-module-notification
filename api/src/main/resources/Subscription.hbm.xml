@@ -36,6 +36,11 @@
         <property name="description" type="java.lang.String" column="description" length="200"/>
         <many-to-one name="user" class="org.openmrs.User" not-null="true" column="user_id"/>
 
+        <set name="subscriptionPatientAssignment" cascade="save-update" inverse="true">
+            <key column="subscription_id"/>
+            <one-to-many class="org.openmrs.module.notifications.entity.SubscriptionPatientAssignment"/>
+        </set>
+
         <many-to-one name="event" class="org.openmrs.module.notifications.entity.Event" column="event_id" lazy="false"/>
 
     </class>

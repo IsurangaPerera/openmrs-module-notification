@@ -1,5 +1,7 @@
 package org.openmrs.module.notifications.rest.resource;
 
+import org.apache.commons.beanutils.PropertyUtils;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,6 +49,25 @@ public class SubscriptionResourceTest extends MainResourceControllerTest {
 		
 		List results = (ArrayList) object.get("results");
 		
-		Assert.assertEquals(1, results.size());
+		Assert.assertEquals(3, results.size());
+	}
+	
+	@Test
+	public void shouldAddSubscription() throws Exception {
+		Context.authenticate(superUser, superUserPassword);
+		MockHttpServletRequest request = request(RequestMethod.POST, getURI());
+		SimpleObject postParameters = new SimpleObject();
+		postParameters.put("name", "ART Patient Visit Alert");
+		postParameters.put("description", "ART Patient Visit Alert");
+		postParameters.put("eventId", "1");
+		postParameters.put("patients", "{\"1\":\"3\", \"4\":\"5\"}");
+		String json = new ObjectMapper().writeValueAsString(postParameters);
+		request.setContent(json.getBytes());
+		SimpleObject subscription = deserialize(handle(request));
+		System.out.println(subscription.toString());
+		
+		Assert.assertEquals("event01", PropertyUtils.getProperty(subscription.get("event"), "name"));
+		Assert.assertEquals("test-user", PropertyUtils.getProperty(subscription.get("user"), "username"));
+		
 	}
 }

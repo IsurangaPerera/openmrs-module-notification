@@ -4,6 +4,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.notifications.dao.SubscriptionManagementDao;
 import org.openmrs.module.notifications.entity.Subscription;
+import org.openmrs.module.notifications.entity.SubscriptionPatientAssignment;
 import org.openmrs.module.notifications.service.SubscriptionManagementService;
 
 import java.util.List;
@@ -24,5 +25,10 @@ public class SubscriptionManagementServiceImpl extends BaseOpenmrsService implem
 	@Override
 	public List<Subscription> getAllSubscriptions() {
 		return subscriptionManagementDao.getAllSubscriptions(Context.getAuthenticatedUser());
+	}
+
+	@Override
+	public SubscriptionPatientAssignment saveSubscriptionPatientAssignment(SubscriptionPatientAssignment spa) {
+		return subscriptionManagementDao.saveSubscriptionPatientAssignment(spa);
 	}
 }

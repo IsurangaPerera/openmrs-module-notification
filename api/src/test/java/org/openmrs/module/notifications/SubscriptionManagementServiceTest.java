@@ -64,7 +64,7 @@ public class SubscriptionManagementServiceTest extends BaseModuleWebContextSensi
 		Context.authenticate(superUser, superUserPassword);
 		
 		List<Subscription> allSubscriptions = Context.getService(SubscriptionManagementService.class).getAllSubscriptions();
-		Assert.assertEquals(1, allSubscriptions.size());
+		Assert.assertEquals(3, allSubscriptions.size());
 	}
 	
 	@Test
