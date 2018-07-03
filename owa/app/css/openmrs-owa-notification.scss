@@ -21,6 +21,27 @@ $max-page-width: 1300px;
   }
 }
 
+.simple-form-ui {
+  form {
+    background: $white;
+    section {
+      display: block;
+      padding: 0px;
+      border-left: none;
+      background: $white;
+    }
+  }
+}
+
+.container{
+  @include clearfix;
+  max-width: $max-page-width;
+  margin: 0 auto;
+  @media screen and (max-width: $max-page-width) {
+    padding: 0 10px;
+  }
+}
+
 .reg-wrapper {
   margin: 0px auto;
   height: 100%;
