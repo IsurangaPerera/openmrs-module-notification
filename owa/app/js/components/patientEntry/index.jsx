@@ -8,8 +8,10 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
+import axios from 'axios';
 import PatientTableToolbar from "./PatientTableToolbar";
 import PatientTableHead from "./PatientTableHead";
+import UrlHelper from "../../../utilities/urlHelper";
 
 let counter = 0;
 function createData(pid, name, gender, age, reg) {
@@ -18,7 +20,6 @@ function createData(pid, name, gender, age, reg) {
         id: counter, pid, name, gender, age, reg,
     };
 }
-
 
 const styles = theme => ({
     root: {
@@ -49,19 +50,43 @@ class PatientTable extends React.Component {
             order: 'asc',
             orderBy: 'name',
             selected: [],
-            data: [
-                createData('1234567890', 'John Doe', 'M', '36', '05 May 2017'),
-                createData('1234567890', 'John Doe', 'M', '36', '05 May 2017'),
-                createData('1234567890', 'John Doe', 'M', '36', '05 May 2017'),
-                createData('1234567890', 'John Doe', 'M', '36', '05 May 2017'),
-                createData('1234567890', 'John Doe', 'M', '36', '05 May 2017'),
-            ].sort((a, b) => (a.dateCreated < b.dateCreated ? -1 : 1)),
+            data: [],
             page: 0,
             rowsPerPage: 5,
         };
+        this.urlHelper = new UrlHelper();
     }
 
+    handleOnSearch = (e) => {
+        const self = this;
+        let searchTerm = (e.match(/\S+/g) || []).join('+');
+        console.log(searchTerm);
+        if(searchTerm === "") return;
+        axios
+            .get(this.urlHelper.apiBaseUrl() + '/patient', {
+                params: {
+                    q: searchTerm,
+                    v: 'full'
+                }
+            })
+            .then(function(response) {
+                let patients = [];
+                response.data.results.forEach((patient) => {
+                    patients.push(
+                        createData(patient.uuid, patient.person.display, patient.person.gender,
+                            patient.person.age, patient.auditInfo.dateCreated)
+                    );
+                });
+                self.setState({data:patients});
+            })
+            .catch(function(errorResponse) {
+                //const error = errorResponse.response.data ? errorResponse.response.data.error : errorResponse;
+                console.log(errorResponse);
+            });
+    };
+
     handleRequestSort = (event, property) => {
+
         const orderBy = property;
         let order = 'desc';
 
@@ -69,10 +94,15 @@ class PatientTable extends React.Component {
             order = 'asc';
         }
 
-        const data =
-            order === 'desc'
-                ? this.state.data.sort((a, b) => (b[orderBy] < a[orderBy] ? -1 : 1))
-                : this.state.data.sort((a, b) => (a[orderBy] < b[orderBy] ? -1 : 1));
+        let data = [];
+        try {
+            data =
+                order === 'desc'
+                    ? this.state.data.sort((a, b) => (b[orderBy] < a[orderBy] ? -1 : 1))
+                    : this.state.data.sort((a, b) => (a[orderBy] < b[orderBy] ? -1 : 1));
+        } catch (e) {
+            console.log(e);
+        }
 
         this.setState({ data, order, orderBy });
     };
@@ -124,9 +154,13 @@ class PatientTable extends React.Component {
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, (data.length - (page * rowsPerPage)));
 
         return (
+
             <div id="body-wrapper" className="body-wrapper">
                 <Paper className={classes.root}>
-                    <PatientTableToolbar numSelected={selected.length} />
+                    <PatientTableToolbar
+                        handleOnSearch={this.handleOnSearch}
+                        numSelected={selected.length}
+                    />
                     <div className={classes.tableWrapper}>
                         <Table className={classes.table} aria-labelledby="tableTitle">
                             <PatientTableHead
