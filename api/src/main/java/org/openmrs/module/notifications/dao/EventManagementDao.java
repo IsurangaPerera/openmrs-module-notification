@@ -19,4 +19,6 @@ public interface EventManagementDao {
 	List getAllEvents();
 	
 	Event getEventById(Integer Id);
+
+    Event getBedByUuid(String uuid);
 }

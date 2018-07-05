@@ -9,7 +9,11 @@ import org.openmrs.module.notifications.entity.SubscriptionPatientAssignment;
 
 import java.util.List;
 
-public class SubscriptionManagementDaoImpl implements SubscriptionManagementDao {
+public class
+
+
+
+SubscriptionManagementDaoImpl implements SubscriptionManagementDao {
 	
 	SessionFactory sessionFactory;
 	

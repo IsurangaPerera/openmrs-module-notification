@@ -24,4 +24,7 @@ public interface EventManagementService extends OpenmrsService {
 	
 	@Authorized(value = { "Get Event" }, requireAll = true)
 	Event getEventById(Integer id);
+
+	@Authorized(value = { "Get Event" }, requireAll = true)
+	Event getEventByUuid(String uuid);
 }

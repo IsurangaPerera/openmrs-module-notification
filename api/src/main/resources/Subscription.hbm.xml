@@ -12,7 +12,7 @@
         <property name="uuid" type="java.lang.String"
                   column="uuid" length="38" unique="true"/>
 
-        <many-to-one name="creator" class="org.openmrs.User" lazy="no-proxy" />
+        <many-to-one name="creator" class="org.openmrs.User" column="creator" lazy="no-proxy" />
 
         <property name="dateCreated" type="java.util.Date"
                   column="date_created" not-null="true" length="19" />

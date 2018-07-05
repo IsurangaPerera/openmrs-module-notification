@@ -71,7 +71,7 @@ class PatientTableToolbar extends React.Component {
                 <div className={this.props.classes.actions}>
                     {this.props.numSelected > 0 ? (
                         <Tooltip title="Add Patients">
-                            <IconButton aria-label="Add Patients">
+                            <IconButton aria-label="Add Patients" onClick={(e)=>{this.props.handleAddPatients(e)}}>
                                 <AddIcon />
                             </IconButton>
                         </Tooltip>
@@ -90,6 +90,7 @@ class PatientTableToolbar extends React.Component {
 
 PatientTableToolbar.propTypes = {
     classes: PropTypes.object.isRequired,
+    handleAddPatients: PropTypes.func.isRequired,
     handleOnSearch: PropTypes.func.isRequired,
     numSelected: PropTypes.number.isRequired,
 };

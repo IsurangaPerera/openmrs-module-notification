@@ -32,10 +32,16 @@ public class EventManagementDaoImpl implements EventManagementDao {
 	
 	@Override
 	public Event getEventById(Integer Id) {
-		String hql = "from Event " + "where id=:Id";
+		String hql = "from Event " + "where event_id=:Id";
 		
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
 		query.setParameter("Id", Id);
 		return (Event) query.uniqueResult();
+	}
+
+	@Override
+	public Event getBedByUuid(String uuid) {
+		return (Event) sessionFactory.getCurrentSession().createQuery("from Event b where b.uuid = :uuid and b.voided=false")
+				.setString("uuid", uuid).uniqueResult();
 	}
 }

@@ -1,17 +1,21 @@
 package org.openmrs.module.notifications.entity;
 
-public class Event {
-	
+import org.openmrs.BaseOpenmrsData;
+
+public class Event extends BaseOpenmrsData {
+
 	private Integer id;
-	
+
 	private String name;
 	
 	private String description;
-	
+
+	@Override
 	public Integer getId() {
 		return id;
 	}
-	
+
+	@Override
 	public void setId(Integer id) {
 		this.id = id;
 	}

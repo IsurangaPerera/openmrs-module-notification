@@ -3,7 +3,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
 
-    <changeSet author="Isuranga Perera" id="subscription_management_module_19062018_1">
+    <changeSet author="Isuranga Perera" id="subscription_management_module_30062018_1">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="event"/>
@@ -13,17 +13,30 @@
             Create event table
         </comment>
         <createTable tableName="event">
-            <column autoIncrement="true" name="id" type="int">
+            <column autoIncrement="true" name="event_id" type="int">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="name" type="varchar(255)">
+            <column name="event_name" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
             <column name="description" type="varchar(255)"/>
+            <column name="date_created" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="changed_by" type="int"/>
+            <column name="date_changed" type="datetime"/>
+            <column name="voided" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="void_reason" type="varchar(255)" defaultValue="null"/>
         </createTable>
+        <addForeignKeyConstraint constraintName="event_changed_by_fk"
+                                 baseTableName="event" baseColumnNames="changed_by"
+                                 referencedTableName="users"
+                                 referencedColumnNames="user_id"/>
     </changeSet>
 
-    <changeSet author="Isuranga Perera" id="subscription_management_module_19062018_2">
+    <changeSet author="Isuranga Perera" id="subscription_management_module_30062018_2">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="subscription"/>
@@ -67,10 +80,10 @@
         <addForeignKeyConstraint constraintName="subscription_event_by_fk"
                                  baseTableName="subscription" baseColumnNames="event_id"
                                  referencedTableName="event"
-                                 referencedColumnNames="id"/>
+                                 referencedColumnNames="event_id"/>
     </changeSet>
 
-    <changeSet author="Isuranga Perera" id="subscription_management_module_19062018_3">
+    <changeSet author="Isuranga Perera" id="subscription_management_module_30062018_3">
         <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="0">select count(*) from privilege where privilege='Edit Subscriptions'</sqlCheck>
         </preConditions>
@@ -81,7 +94,7 @@
         </insert>
     </changeSet>
 
-    <changeSet author="Isuranga Perera" id="subscription_management_module_19062018_4">
+    <changeSet author="Isuranga Perera" id="subscription_management_module_30062018_4">
         <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="0">select count(*) from privilege where privilege='Get Subscriptions'</sqlCheck>
         </preConditions>
@@ -92,7 +105,7 @@
         </insert>
     </changeSet>
 
-    <changeSet author="Isuranga Perera" id="subscription_management_module_19062018_5">
+    <changeSet author="Isuranga Perera" id="subscription_management_module_30062018_5">
         <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="0">select count(*) from privilege where privilege='Edit Event'</sqlCheck>
         </preConditions>
@@ -103,7 +116,7 @@
         </insert>
     </changeSet>
 
-    <changeSet author="Isuranga Perera" id="subscription_management_module_19062018_6">
+    <changeSet author="Isuranga Perera" id="subscription_management_module_30062018_6">
         <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="0">select count(*) from privilege where privilege='Get Event'</sqlCheck>
         </preConditions>
@@ -114,7 +127,7 @@
         </insert>
     </changeSet>
 
-    <changeSet author="Isuranga Perera" id="subscription_management_module_26062018_1">
+    <changeSet author="Isuranga Perera" id="subscription_management_module_30062018_7">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="subscription__patient_assignment_map"/>
@@ -152,7 +165,7 @@
                                  baseTableName="subscription__patient_assignment_map" baseColumnNames="patient_id"
                                  referencedTableName="patient"
                                  referencedColumnNames="patient_id"/>
-        <addForeignKeyConstraint constraintName="patient_id_fk"
+        <addForeignKeyConstraint constraintName="patient_subscription_id_fk"
                                  baseTableName="subscription__patient_assignment_map" baseColumnNames="subscription_id"
                                  referencedTableName="subscription"
                                  referencedColumnNames="subscription_id"/>
@@ -166,6 +179,122 @@
                                  referencedTableName="users" referencedColumnNames="user_id"/>
         <addForeignKeyConstraint constraintName="subscription__patient_assignment_map_voided_by_fk"
                                  baseTableName="subscription__patient_assignment_map" baseColumnNames="voided_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
+
+    </changeSet>
+
+    <changeSet author="Isuranga Perera" id="subscription_management_module_30062018_8">
+        <addColumn tableName="subscription">
+            <column name="uuid" type="char(38)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Isuranga Perera" id="subscription_management_module_30062018_9">
+        <addColumn tableName="event">
+            <column name="uuid" type="char(38)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Isuranga Perera" id="subscription_management_module_30062018_10">
+        <addColumn tableName="event">
+            <column name="creator" type="int" valueNumeric="1"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Isuranga Perera" id="subscription_management_module_30062018_11">
+        <addForeignKeyConstraint constraintName="event_creator"
+                                 baseTableName="event" baseColumnNames="creator"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
+    </changeSet>
+
+    <changeSet author="Isuranga Perera" id="subscription_management_module_30062018_12">
+        <addColumn tableName="event">
+            <column name="voided_by" type="int"/>
+        </addColumn>
+        <addForeignKeyConstraint constraintName="event_voided_by"
+                                 baseTableName="event" baseColumnNames="voided_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
+    </changeSet>
+
+    <changeSet author="Isuranga Perera" id="subscription_management_module_30062018_13">
+        <addColumn tableName="event">
+            <column name="date_voided" type="datetime"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Isuranga Perera" id="subscription_management_module_30062018_14">
+        <addColumn tableName="subscription">
+            <column name="creator" type="int" valueNumeric="1"/>
+        </addColumn>
+        <addForeignKeyConstraint constraintName="subs_creator_fk"
+                                 baseTableName="subscription" baseColumnNames="creator"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
+    </changeSet>
+
+    <changeSet author="Isuranga Perera" id="subscription_management_module_30062018_15">
+        <addColumn tableName="subscription">
+            <column name="date_voided" type="datetime"/>
+        </addColumn>
+        <addColumn tableName="subscription">
+            <column name="voided_by" type="int"/>
+        </addColumn>
+        <addForeignKeyConstraint constraintName="sub_voided_by"
+                                 baseTableName="subscription" baseColumnNames="voided_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
+    </changeSet>
+
+    <changeSet author="Isuranga Perera" id="subscription_management_module_30062018_16">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="subscription_patient_assignment_map"/>
+            </not>
+        </preConditions>
+        <comment>
+            Create subscription_patient_assignment_map table
+        </comment>
+        <createTable tableName="subscription_patient_assignment_map">
+            <column autoIncrement="true" name="subscription_patient_assignment_map_id" type="int">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="patient_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="subscription_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="uuid" type="char(38)"/>
+            <column name="creator" type="int" valueNumeric="1"/>
+            <column name="date_created" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="changed_by" type="int"/>
+            <column name="date_changed" type="datetime"/>
+            <column name="voided" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="voided_by" type="int"/>
+            <column name="date_voided" type="datetime"/>
+            <column name="void_reason" type="varchar(255)" defaultValue="null"/>
+
+        </createTable>
+        <addForeignKeyConstraint constraintName="p_id_fk"
+                                 baseTableName="subscription_patient_assignment_map" baseColumnNames="patient_id"
+                                 referencedTableName="patient"
+                                 referencedColumnNames="patient_id"/>
+        <addForeignKeyConstraint constraintName="p_subscription_id_fk"
+                                 baseTableName="subscription_patient_assignment_map" baseColumnNames="subscription_id"
+                                 referencedTableName="subscription"
+                                 referencedColumnNames="subscription_id"/>
+        <addUniqueConstraint tableName="subscription_patient_assignment_map"
+                             columnNames="uuid" constraintName="subscription_unique_uuid"/>
+        <addForeignKeyConstraint constraintName="subscription_patient_assignment_map_creator"
+                                 baseTableName="subscription_patient_assignment_map" baseColumnNames="creator"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
+        <addForeignKeyConstraint constraintName="subscription_patient_assignment_map_changed_by_fk"
+                                 baseTableName="subscription_patient_assignment_map" baseColumnNames="changed_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
+        <addForeignKeyConstraint constraintName="subscription_patient_assignment_map_voided_by_fk"
+                                 baseTableName="subscription_patient_assignment_map" baseColumnNames="voided_by"
                                  referencedTableName="users" referencedColumnNames="user_id"/>
 
     </changeSet>
