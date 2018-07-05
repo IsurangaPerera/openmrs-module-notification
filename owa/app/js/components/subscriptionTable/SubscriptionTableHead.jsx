@@ -19,7 +19,7 @@ const columnData = [
     id: 'active', numeric: true, disablePadding: false, label: 'Active',
   },
   {
-    id: 'date-created', numeric: true, disablePadding: false, label: 'Date Created',
+    id: 'description', numeric: true, disablePadding: false, label: 'Description',
   },
   {
     id: 'action', numeric: true, disablePadding: false, label: '',
