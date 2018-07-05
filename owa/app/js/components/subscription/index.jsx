@@ -10,6 +10,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ChipsArray from './Chips';
 import UrlHelper from "../../../utilities/urlHelper";
 import axios from "axios";
+import Header from "../header";
 
 const styles = theme => ({
     root: {
@@ -123,112 +124,115 @@ class Subscription extends React.Component {
         if(this.state.events.length === 0) this.getEvents();
         const { classes } = this.props;
         return (
-            <div id="body-wrapper" className="body-wrapper">
-                <Paper className={classes.root}>
-                    <form className={classes.container} noValidate autoComplete="off">
-                        <Grid container spacing={24}>
+            <div>
+                <Header/>
+                <div id="body-wrapper" className="body-wrapper">
+                    <Paper className={classes.root}>
+                        <form className={classes.container} noValidate autoComplete="off">
+                            <Grid container spacing={24}>
 
-                            <Grid item xs={4} />
-                            <Grid item xs={4}>
-                                <TextField fullWidth
-                                           id="name"
-                                           label="Name"
-                                           className={classes.textField}
-                                           value={this.state.name}
-                                           onChange={this.handleChange('name')}
-                                           margin="normal"
-                                />
-                            </Grid>
-                            <Grid item xs={4} />
-
-                            <Grid item xs={4} />
-                            <Grid item xs={4}>
-                                <TextField fullWidth
-                                           id="select-eventId"
-                                           select
-                                           label="Select Event"
-                                           className={classes.textField}
-                                           value={this.state.event}
-                                           onChange={this.handleChange('event')}
-                                           SelectProps={{
-                                               MenuProps: {
-                                                   className: classes.menu,
-                                               },
-                                           }}
-                                           helperText="Please select the event"
-                                           margin="normal"
-                                >
-                                    {this.state.events.map(option => (
-                                        <MenuItem key={option.value} value={option.value}>
-                                            {option.label}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                            <Grid item xs={4} />
-
-                            <Grid item xs={4} />
-                            { (this.props.location.patients === undefined) ? <Grid item xs={4} /> :
+                                <Grid item xs={4} />
                                 <Grid item xs={4}>
-                                    <ChipsArray
-                                        chipData={() => {
-                                            let data = [];
-                                            let i = 0;
-                                            this.state.patients.forEach((p) => {
-                                                let obj = {};
-                                                obj.key = i;
-                                                obj.label = p.name;
-                                                i = i + 1;
-                                                data.push(obj);
-                                            });
-                                            return data;
-                                        }}
+                                    <TextField fullWidth
+                                               id="name"
+                                               label="Name"
+                                               className={classes.textField}
+                                               value={this.state.name}
+                                               onChange={this.handleChange('name')}
+                                               margin="normal"
                                     />
                                 </Grid>
-                            }
-                            <Grid item xs={4} />
+                                <Grid item xs={4} />
 
-                            <Grid item xs={4} />
-                            <Grid item xs={2}>
-                                <Link
-                                    to={this.newTo}>
-                                    Add Patient(s)
-                                </Link>
-                            </Grid>
-                            <Grid item xs={6} />
+                                <Grid item xs={4} />
+                                <Grid item xs={4}>
+                                    <TextField fullWidth
+                                               id="select-eventId"
+                                               select
+                                               label="Select Event"
+                                               className={classes.textField}
+                                               value={this.state.event}
+                                               onChange={this.handleChange('event')}
+                                               SelectProps={{
+                                                   MenuProps: {
+                                                       className: classes.menu,
+                                                   },
+                                               }}
+                                               helperText="Please select the event"
+                                               margin="normal"
+                                    >
+                                        {this.state.events.map(option => (
+                                            <MenuItem key={option.value} value={option.value}>
+                                                {option.label}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
+                                </Grid>
+                                <Grid item xs={4} />
 
-                            <Grid item xs={4} />
-                            <Grid item xs={4}>
-                                <TextField fullWidth
-                                           multiline
-                                           rowsMax="4"
-                                           id="description"
-                                           label="Description"
-                                           className={classes.textField}
-                                           value={this.state.description}
-                                           onChange={this.handleChange('description')}
-                                           margin="normal"
-                                />
-                            </Grid>
-                            <Grid item xs={4} />
+                                <Grid item xs={4} />
+                                { (this.props.location.patients === undefined) ? <Grid item xs={4} /> :
+                                    <Grid item xs={4}>
+                                        <ChipsArray
+                                            chipData={() => {
+                                                let data = [];
+                                                let i = 0;
+                                                this.state.patients.forEach((p) => {
+                                                    let obj = {};
+                                                    obj.key = i;
+                                                    obj.label = p.name;
+                                                    i = i + 1;
+                                                    data.push(obj);
+                                                });
+                                                return data;
+                                            }}
+                                        />
+                                    </Grid>
+                                }
+                                <Grid item xs={4} />
 
-                            <Grid item xs={6} />
-                            <Grid item xs={1}>
-                                <Button size="large" className={classes.button}>
-                                    Close
-                                </Button>
-                            </Grid>
-                            <Grid item xs={1}>
-                                <Button size="large" variant="outlined" color="primary" className={classes.button} onClick={this.saveSubscription}>
-                                    Save
-                                </Button>
-                            </Grid>
-                            <Grid item xs={4} />
+                                <Grid item xs={4} />
+                                <Grid item xs={2}>
+                                    <Link
+                                        to={this.newTo}>
+                                        Add Patient(s)
+                                    </Link>
+                                </Grid>
+                                <Grid item xs={6} />
 
-                        </Grid>
-                    </form>
-                    <br/><br/>
-                </Paper>
+                                <Grid item xs={4} />
+                                <Grid item xs={4}>
+                                    <TextField fullWidth
+                                               multiline
+                                               rowsMax="4"
+                                               id="description"
+                                               label="Description"
+                                               className={classes.textField}
+                                               value={this.state.description}
+                                               onChange={this.handleChange('description')}
+                                               margin="normal"
+                                    />
+                                </Grid>
+                                <Grid item xs={4} />
+
+                                <Grid item xs={6} />
+                                <Grid item xs={1}>
+                                    <Button size="large" className={classes.button}>
+                                        Close
+                                    </Button>
+                                </Grid>
+                                <Grid item xs={1}>
+                                    <Button size="large" variant="outlined" color="primary" className={classes.button} onClick={this.saveSubscription}>
+                                        Save
+                                    </Button>
+                                </Grid>
+                                <Grid item xs={4} />
+
+                            </Grid>
+                        </form>
+                        <br/><br/>
+                    </Paper>
+                </div>
             </div>
         )
     }

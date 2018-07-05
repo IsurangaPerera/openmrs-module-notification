@@ -13,6 +13,7 @@ import PatientTableToolbar from "./PatientTableToolbar";
 import PatientTableHead from "./PatientTableHead";
 import UrlHelper from "../../../utilities/urlHelper";
 import {Redirect} from "react-router-dom";
+import Header from "../header";
 
 let counter = 0;
 function createData(pid, name, gender, age, reg) {
@@ -175,73 +176,75 @@ class PatientTable extends React.Component {
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, (data.length - (page * rowsPerPage)));
 
         return (
-
-            <div id="body-wrapper" className="body-wrapper">
-                <Paper className={classes.root}>
-                    <PatientTableToolbar
-                        handleAddPatients={this.handleAddPatients}
-                        handleOnSearch={this.handleOnSearch}
-                        numSelected={selected.length}
-                    />
-                    <div className={classes.tableWrapper}>
-                        <Table className={classes.table} aria-labelledby="tableTitle">
-                            <PatientTableHead
-                                numSelected={selected.length}
-                                order={order}
-                                orderBy={orderBy}
-                                onSelectAllClick={this.handleSelectAllClick}
-                                onRequestSort={this.handleRequestSort}
-                                rowCount={data.length}
-                            />
-                            <TableBody>
-                                {data.slice(page * rowsPerPage, ((page * rowsPerPage) + rowsPerPage)).map((n) => {
-                                    const isSelected = this.isSelected(n.id);
-                                    return (
-                                        <TableRow
-                                            hover
-                                            onClick={event => this.handleClick(event, n.id)}
-                                            role="checkbox"
-                                            aria-checked={isSelected}
-                                            tabIndex={-1}
-                                            key={n.id}
-                                            selected={isSelected}
-                                        >
-                                            <TableCell padding="checkbox">
-                                                <Checkbox checked={isSelected} />
-                                            </TableCell>
-                                            <TableCell component="th" scope="row" padding="none" className={classes.body}>
-                                                {n.pid}
-                                            </TableCell>
-                                            <TableCell numeric className={classes.body}>{n.name}</TableCell>
-                                            <TableCell numeric className={classes.body}>{n.gender}</TableCell>
-                                            <TableCell numeric className={classes.body}>{n.age}</TableCell>
-                                            <TableCell numeric className={classes.body}>{n.reg}</TableCell>
+            <div>
+                <Header/>
+                <div id="body-wrapper" className="body-wrapper">
+                    <Paper className={classes.root}>
+                        <PatientTableToolbar
+                            handleAddPatients={this.handleAddPatients}
+                            handleOnSearch={this.handleOnSearch}
+                            numSelected={selected.length}
+                        />
+                        <div className={classes.tableWrapper}>
+                            <Table className={classes.table} aria-labelledby="tableTitle">
+                                <PatientTableHead
+                                    numSelected={selected.length}
+                                    order={order}
+                                    orderBy={orderBy}
+                                    onSelectAllClick={this.handleSelectAllClick}
+                                    onRequestSort={this.handleRequestSort}
+                                    rowCount={data.length}
+                                />
+                                <TableBody>
+                                    {data.slice(page * rowsPerPage, ((page * rowsPerPage) + rowsPerPage)).map((n) => {
+                                        const isSelected = this.isSelected(n.id);
+                                        return (
+                                            <TableRow
+                                                hover
+                                                onClick={event => this.handleClick(event, n.id)}
+                                                role="checkbox"
+                                                aria-checked={isSelected}
+                                                tabIndex={-1}
+                                                key={n.id}
+                                                selected={isSelected}
+                                            >
+                                                <TableCell padding="checkbox">
+                                                    <Checkbox checked={isSelected} />
+                                                </TableCell>
+                                                <TableCell component="th" scope="row" padding="none" className={classes.body}>
+                                                    {n.pid}
+                                                </TableCell>
+                                                <TableCell numeric className={classes.body}>{n.name}</TableCell>
+                                                <TableCell numeric className={classes.body}>{n.gender}</TableCell>
+                                                <TableCell numeric className={classes.body}>{n.age}</TableCell>
+                                                <TableCell numeric className={classes.body}>{n.reg}</TableCell>
+                                            </TableRow>
+                                        );
+                                    })}
+                                    {emptyRows > 0 && (
+                                        <TableRow style={{ height: 49 * emptyRows }}>
+                                            <TableCell colSpan={6} />
                                         </TableRow>
-                                    );
-                                })}
-                                {emptyRows > 0 && (
-                                    <TableRow style={{ height: 49 * emptyRows }}>
-                                        <TableCell colSpan={6} />
-                                    </TableRow>
-                                )}
-                            </TableBody>
-                        </Table>
-                    </div>
-                    <TablePagination
-                        component="div"
-                        count={data.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        backIconButtonProps={{
-                            'aria-label': 'Previous Page',
-                        }}
-                        nextIconButtonProps={{
-                            'aria-label': 'Next Page',
-                        }}
-                        onChangePage={this.handleChangePage}
-                        onChangeRowsPerPage={this.handleChangeRowsPerPage}
-                    />
-                </Paper>
+                                    )}
+                                </TableBody>
+                            </Table>
+                        </div>
+                        <TablePagination
+                            component="div"
+                            count={data.length}
+                            rowsPerPage={rowsPerPage}
+                            page={page}
+                            backIconButtonProps={{
+                                'aria-label': 'Previous Page',
+                            }}
+                            nextIconButtonProps={{
+                                'aria-label': 'Next Page',
+                            }}
+                            onChangePage={this.handleChangePage}
+                            onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                        />
+                    </Paper>
+                </div>
             </div>
         );
     }

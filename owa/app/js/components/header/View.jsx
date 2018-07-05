@@ -1,21 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-const contextPath = window.location.href.split('/')[3];
+import {Link} from "react-router-dom";
 
 const View = props => (
     <div className="reg-header-wrapper header-wrapper">
         <header className="reg-header" >
             <ul className="top-nav fl">
                 <a className="back-btn" accessKey="h" ><i className="fa fa-home"/></a>
-                <li>
-                    <a accessKey="e"><i className="fa-search fa fa-white small"/>
-                        <span className="nav-link">S<u>e</u>arch</span></a>
-                </li>
-                <li >
-                    <a accessKey="n"><i className="fa-plus fa fa-white small"/>
-                        <span className="nav-link">Create <u>N</u>ew</span></a>
-                </li>
+                { (props.isActive === false) ? null :
+                    <li >
+                        <Link accessKey="n" to={props.createNewLink}>
+                            <i className="fa-plus fa fa-white small"/>
+                            <span className="nav-link">Create <u>N</u>ew</span>
+                        </Link>
+                    </li>
+                }
             </ul>
             <div className="reg-header-right fr">
                 <button className="btn-user-info fr">
@@ -40,10 +39,9 @@ const View = props => (
 );
 
 View.propTypes = {
-    currentLocation: PropTypes.shape().isRequired,
     currentUser: PropTypes.string.isRequired,
-    locations: PropTypes.array.isRequired,
-    toggleState: PropTypes.func.isRequired,
+    createNewLink: PropTypes.string,
+    isActive: PropTypes.bool.isRequired,
     userDropdown: PropTypes.bool,
     locationDropdown: PropTypes.bool,
 };
@@ -51,6 +49,7 @@ View.propTypes = {
 View.defaultProps = {
     userDropdown: false,
     locationDropdown: false,
+    isActive: false
 };
 
 export default View;
