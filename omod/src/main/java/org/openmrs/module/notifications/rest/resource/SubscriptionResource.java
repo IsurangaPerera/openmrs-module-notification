@@ -27,6 +27,7 @@ import org.openmrs.module.webservices.rest.web.response.IllegalPropertyException
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
 import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @Resource(name = RestConstants.VERSION_1 + "/notification", supportedClass = Subscription.class, supportedOpenmrsVersions = {
@@ -60,6 +61,7 @@ public class SubscriptionResource extends DelegatingCrudResource<Subscription> {
     @Override
     protected PageableResult doGetAll(RequestContext context) throws ResponseException {
         List<Subscription> subscriptionList = Context.getService(SubscriptionManagementService.class).getAllSubscriptions();
+
         return new AlreadyPaged<Subscription>(context, subscriptionList, false);
     }
 
@@ -76,12 +78,9 @@ public class SubscriptionResource extends DelegatingCrudResource<Subscription> {
 
         Subscription subscription = this.constructSubscription(null, propertiesToCreate);
         Context.getService(SubscriptionManagementService.class).saveSubscription(subscription);
-        try {
-            SimpleObject patients = propertiesToCreate.parseJson((String)propertiesToCreate.get("patients"));
-            this.constructSubscriptionPatientAssignment(subscription, patients);
+        LinkedHashMap<String, String> patients = propertiesToCreate.get("patients");
 
-        } catch (IOException ignored) {
-        }
+        this.constructSubscriptionPatientAssignment(subscription, patients);
 
         return ConversionUtil.convertToRepresentation(subscription, context.getRepresentation());
     }
@@ -106,10 +105,10 @@ public class SubscriptionResource extends DelegatingCrudResource<Subscription> {
 
     }
 
-    private void constructSubscriptionPatientAssignment(Subscription subscription, SimpleObject properties) {
+    private void constructSubscriptionPatientAssignment(Subscription subscription, LinkedHashMap<String, String> properties) {
         for(String id : properties.keySet()) {
             Patient patient = Context.getService(PatientService.class)
-                    .getPatient(Integer.parseInt((String) properties.get(id)));
+                    .getPatientByUuid(properties.get(id));
             SubscriptionPatientAssignment spa = new SubscriptionPatientAssignment();
             spa.setPatient(patient);
             spa.setSubscription(subscription);
@@ -141,7 +140,7 @@ public class SubscriptionResource extends DelegatingCrudResource<Subscription> {
             subscription.setName((String) properties.get("name"));
             subscription.setDescription((String) properties.get("description"));
             Event event = Context.getService(EventManagementService.class)
-                    .getEventById(Integer.parseInt((String) properties.get("eventId")));
+                    .getEventByUuid((String) properties.get("eventId"));
             if (event == null)
                 throw new IllegalPropertyException("Event not exist");
 

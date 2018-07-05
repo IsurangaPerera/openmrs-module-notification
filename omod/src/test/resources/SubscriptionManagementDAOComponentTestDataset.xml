@@ -1,10 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dataset>
 
-    <event name="event01" description="Event 01" />
-    <event name="event02" description="Event 02" />
-    <event name="event03" description="Event 03" />
-
     <location location_id="12348" name="Ganiyari" description="This is a small village in central India." creator="1" date_created="2008-08-18 14:09:05.0" retired="0" uuid="285e8574-9d21-11e2-8137-0800271c1b75"/>
     <!--first ward-->
     <location location_id="12345" name="Cardio ward on first floor" description="This ward houses cardio patients. It is a general cardio ward." creator="1" date_created="2008-08-18 14:09:05.0" retired="0" uuid="7779d653-393b-4118-9c83-a3715b82d4ac" parent_location="12348"/>
@@ -57,11 +53,11 @@
     <person person_id="567" gender="" birthdate="1975-06-30" birthdate_estimated="false" dead="false" creator="1" date_created="2005-01-01 00:00:00.0" changed_by="1" date_changed="2007-09-20 21:54:12.0" voided="false" void_reason="" uuid="6adb7c42-cfd2-4301-b53b-ff17c5654ff7"/>
     <person person_id="678" gender="" birthdate="1975-06-30" birthdate_estimated="false" dead="false" creator="1" date_created="2005-01-01 00:00:00.0" changed_by="1" date_changed="2007-09-20 21:54:12.0" voided="false" void_reason="" uuid="6adb7c42-cfd2-4301-b53b-ff17c5654dd7"/>
 
-    <event id="1" name="event01" description="Event 01" />
-    <event id="2" name="event02" description="Event 02" />
-    <event id="3" name="event03" description="Event 03" />
-    <event id="4" name="event04" description="Event 04" />
-    <event id="5" name="event05" description="Event 05" />
+    <event event_id="1" event_name="event01" description="Event 01" date_created="2005-01-01 00:00:00.0" changed_by="1" date_changed="2007-09-20 21:54:12.0" voided="false" void_reason="" />
+    <event event_id="2" event_name="event02" description="Event 02" date_created="2005-01-01 00:00:00.0" changed_by="1" date_changed="2007-09-20 21:54:12.0" voided="false" void_reason="" />
+    <event event_id="3" event_name="event03" description="Event 03" date_created="2005-01-01 00:00:00.0" changed_by="1" date_changed="2007-09-20 21:54:12.0" voided="false" void_reason="" />
+    <event event_id="4" event_name="event04" description="Event 04" date_created="2005-01-01 00:00:00.0" changed_by="1" date_changed="2007-09-20 21:54:12.0" voided="false" void_reason="" />
+    <event event_id="5" event_name="event05" description="Event 05" date_created="2005-01-01 00:00:00.0" changed_by="1" date_changed="2007-09-20 21:54:12.0" voided="false" void_reason="" />
 
     <subscription subscription_id="1" subscription_name="On Patient Arrival" description="Notify when a patient arrives" date_created="2005-01-01 00:00:00.0" changed_by="1" date_changed="2007-09-20 21:54:12.0" voided="false" void_reason="" user_id="190" event_id="1"/>
     <subscription subscription_id="2" subscription_name="Lab Result Arrival" description="Notify when a lab report arrives" date_created="2005-01-01 00:00:00.0" changed_by="1" date_changed="2007-09-20 21:54:12.0" voided="false" void_reason="" user_id="190" event_id="1"/>

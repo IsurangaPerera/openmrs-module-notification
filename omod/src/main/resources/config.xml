@@ -27,6 +27,7 @@
     <mappingFiles>
         Event.hbm.xml
         Subscription.hbm.xml
+        SubscriptionPatientAssignment.hbm.xml
     </mappingFiles>
 
 </module>
