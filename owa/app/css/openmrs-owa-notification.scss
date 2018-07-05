@@ -33,6 +33,10 @@ $max-page-width: 1300px;
   }
 }
 
+body {
+  margin: 0 auto;
+}
+
 .container{
   @include clearfix;
   max-width: $max-page-width;
@@ -40,6 +44,11 @@ $max-page-width: 1300px;
   @media screen and (max-width: $max-page-width) {
     padding: 0 10px;
   }
+}
+
+li, ol, ul {
+  margin: 0;
+  padding: 0;
 }
 
 .reg-wrapper {
@@ -162,7 +171,8 @@ $max-page-width: 1300px;
 }
 
 .body-wrapper{
-  padding: 0px 40px 40px 40px;
+  margin-right: 2%;
+  margin-left: 2%;
 }
 
 .reg-header-right{

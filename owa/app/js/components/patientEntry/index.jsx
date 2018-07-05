@@ -12,6 +12,7 @@ import axios from 'axios';
 import PatientTableToolbar from "./PatientTableToolbar";
 import PatientTableHead from "./PatientTableHead";
 import UrlHelper from "../../../utilities/urlHelper";
+import {Redirect} from "react-router-dom";
 
 let counter = 0;
 function createData(pid, name, gender, age, reg) {
@@ -51,8 +52,10 @@ class PatientTable extends React.Component {
             orderBy: 'name',
             selected: [],
             data: [],
+            selectedPatients: [],
             page: 0,
             rowsPerPage: 5,
+            toSubscription: false
         };
         this.urlHelper = new UrlHelper();
     }
@@ -60,7 +63,6 @@ class PatientTable extends React.Component {
     handleOnSearch = (e) => {
         const self = this;
         let searchTerm = (e.match(/\S+/g) || []).join('+');
-        console.log(searchTerm);
         if(searchTerm === "") return;
         axios
             .get(this.urlHelper.apiBaseUrl() + '/patient', {
@@ -83,6 +85,16 @@ class PatientTable extends React.Component {
                 //const error = errorResponse.response.data ? errorResponse.response.data.error : errorResponse;
                 console.log(errorResponse);
             });
+    };
+
+    handleAddPatients = (e) => {
+        let selectedPatients = [];
+        let s = this.state.selected.length;
+        this.state.selected.forEach((i)=> {
+            selectedPatients.push(this.state.data[i%s]);
+        });
+        this.setState({ selectedPatients: selectedPatients });
+        this.setState({ toSubscription: true });
     };
 
     handleRequestSort = (event, property) => {
@@ -147,6 +159,15 @@ class PatientTable extends React.Component {
     isSelected = id => this.state.selected.indexOf(id) !== -1;
 
     render() {
+        const newTo = {
+            pathname: `${this.urlHelper.owaPath()}/subscription`,
+            state: this.props.location.state,
+            patients: this.state.selectedPatients
+        };
+
+        if (this.state.toSubscription === true) {
+            return <Redirect to={newTo} />
+        }
         const { classes } = this.props;
         const {
             data, order, orderBy, selected, rowsPerPage, page,
@@ -158,6 +179,7 @@ class PatientTable extends React.Component {
             <div id="body-wrapper" className="body-wrapper">
                 <Paper className={classes.root}>
                     <PatientTableToolbar
+                        handleAddPatients={this.handleAddPatients}
                         handleOnSearch={this.handleOnSearch}
                         numSelected={selected.length}
                     />

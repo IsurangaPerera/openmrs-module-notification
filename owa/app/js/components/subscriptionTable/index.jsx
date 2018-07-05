@@ -180,8 +180,7 @@ class SubscriptionTable extends React.Component {
                         <TableCell numeric className={classes.body}>{n.dateCreated}</TableCell>
                         <TableCell numeric className={classes.body}>
                           <Link
-                            to={`${this.urlHelper.owaPath()}/subscriptions.html`}
-                            className={`${this.urlHelper.owaPath()}/subscriptions.html`}>
+                            to={`${this.urlHelper.owaPath()}/subscription`}>
                           Edit
                           </Link>
                         </TableCell>

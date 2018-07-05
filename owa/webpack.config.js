@@ -52,7 +52,7 @@ const getConfig = function () {
 	  } catch (err) {
 	    // create file with defaults if not found
 	    config = {
-	      LOCAL_OWA_FOLDER: '/home/isurangaperera/openmrs/platform/owa/',
+	      LOCAL_OWA_FOLDER: '/home/isurangaperera/openmrs/gsoc2/owa/',
 	      APP_ENTRY_POINT: 'http://localhost:8080/openmrs/owa/openmrs-module-notification/index.html',
 	    };
 
@@ -135,19 +135,6 @@ plugins.push(new CommonsChunkPlugin({
 
 plugins.push(new HtmlWebpackPlugin({
   template: './app/index.html',
-  inject: 'body',
-}));
-
-plugins.push(new CopyWebpackPlugin([{
-  from: './app/subscriptions.html',
-}]));
-
-plugins.push(new CopyWebpackPlugin([{
-  from: './app/edit.html',
-}]));
-
-plugins.push(new HtmlWebpackPlugin({
-  template: './app/subscriptions.html',
   inject: 'body',
 }));
 

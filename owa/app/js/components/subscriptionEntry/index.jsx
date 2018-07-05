@@ -77,10 +77,12 @@ class SubscriptionEntry extends React.Component {
                                 Event Type
                             </Col>
                             <Col sm={4}>
-                                <FormControl componentClass="select" placeholder="select">
+                                <select onChange={(e) => {
+                                    this.state.eventId = e.target.value;
+                                }}>
                                     <option value="select">select</option>
                                     <option value="other">...</option>
-                                </FormControl>
+                                </select>
                             </Col>
                         </FormGroup>
 
