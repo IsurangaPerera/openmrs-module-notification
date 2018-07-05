@@ -1,7 +1,7 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -13,8 +13,10 @@ import SubscriptionTableHead from './SubscriptionTableHead';
 import SubscriptionTableToolbar from './SubscriptionTableToolbar';
 import UrlHelper from '../../../utilities/urlHelper';
 import axios from "axios/index";
+import Header from "../header";
 
 let counter = 0;
+
 function createData(name, eventType, active, description, op) {
     counter += 1;
     return {
@@ -47,22 +49,6 @@ const styles = theme => ({
 });
 
 class SubscriptionTable extends React.Component {
-    constructor(props, context) {
-        super(props, context);
-
-        this.state = {
-            order: 'asc',
-            orderBy: 'name',
-            selected: [],
-            data: [].sort((a, b) => (a.name < b.name ? -1 : 1)),
-            page: 0,
-            rowsPerPage: 5,
-        };
-
-        this.urlHelper = new UrlHelper();
-        this.handleOnPageLoad();
-    }
-
     handleOnPageLoad = () => {
         const self = this;
         axios
@@ -71,7 +57,7 @@ class SubscriptionTable extends React.Component {
                     v: 'full'
                 }
             })
-            .then(function(response) {
+            .then(function (response) {
                 let subscriptions = [];
                 response.data.results.forEach((subscription) => {
                     subscriptions.push(
@@ -79,13 +65,12 @@ class SubscriptionTable extends React.Component {
                             subscription.description)
                     );
                 });
-                self.setState({data:subscriptions});
+                self.setState({data: subscriptions});
             })
-            .catch(function(errorResponse) {
+            .catch(function (errorResponse) {
                 console.log(errorResponse);
             });
     };
-
     handleRequestSort = (event, property) => {
         const orderBy = property;
         let order = 'desc';
@@ -99,19 +84,17 @@ class SubscriptionTable extends React.Component {
                 ? this.state.data.sort((a, b) => (b[orderBy] < a[orderBy] ? -1 : 1))
                 : this.state.data.sort((a, b) => (a[orderBy] < b[orderBy] ? -1 : 1));
 
-        this.setState({ data, order, orderBy });
+        this.setState({data, order, orderBy});
     };
-
     handleSelectAllClick = (event, checked) => {
         if (checked) {
-            this.setState({ selected: this.state.data.map(n => n.id) });
+            this.setState({selected: this.state.data.map(n => n.id)});
             return;
         }
-        this.setState({ selected: [] });
+        this.setState({selected: []});
     };
-
     handleClick = (event, id) => {
-        const { selected } = this.state;
+        const {selected} = this.state;
         const selectedIndex = selected.indexOf(id);
         let newSelected = [];
 
@@ -128,94 +111,114 @@ class SubscriptionTable extends React.Component {
             );
         }
 
-        this.setState({ selected: newSelected });
+        this.setState({selected: newSelected});
     };
-
     handleChangePage = (event, page) => {
-        this.setState({ page });
+        this.setState({page});
     };
-
     handleChangeRowsPerPage = (event) => {
-        this.setState({ rowsPerPage: event.target.value });
+        this.setState({rowsPerPage: event.target.value});
     };
-
     isSelected = id => this.state.selected.indexOf(id) !== -1;
 
+    constructor(props, context) {
+        super(props, context);
+
+        this.state = {
+            order: 'asc',
+            orderBy: 'name',
+            selected: [],
+            data: [].sort((a, b) => (a.name < b.name ? -1 : 1)),
+            page: 0,
+            rowsPerPage: 5,
+        };
+
+        this.urlHelper = new UrlHelper();
+        this.handleOnPageLoad();
+    }
+
     render() {
-        const { classes } = this.props;
+        const {classes} = this.props;
         const {
             data, order, orderBy, selected, rowsPerPage, page,
         } = this.state;
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, (data.length - (page * rowsPerPage)));
 
         return (
-            <div id="body-wrapper" className="body-wrapper">
-                <Paper className={classes.root}>
-                    <SubscriptionTableToolbar numSelected={selected.length} />
-                    <div className={classes.tableWrapper}>
-                        <Table className={classes.table} aria-labelledby="tableTitle">
-                            <SubscriptionTableHead
-                                numSelected={selected.length}
-                                order={order}
-                                orderBy={orderBy}
-                                onSelectAllClick={this.handleSelectAllClick}
-                                onRequestSort={this.handleRequestSort}
-                                rowCount={data.length}
-                            />
-                            <TableBody>
-                                {data.slice(page * rowsPerPage, ((page * rowsPerPage) + rowsPerPage)).map((n) => {
-                                    const isSelected = this.isSelected(n.id);
-                                    return (
-                                        <TableRow
-                                            hover
-                                            onClick={event => this.handleClick(event, n.id)}
-                                            role="checkbox"
-                                            aria-checked={isSelected}
-                                            tabIndex={-1}
-                                            key={n.id}
-                                            selected={isSelected}
-                                        >
-                                            <TableCell padding="checkbox" className={classes.body}>
-                                                <Checkbox checked={isSelected} />
-                                            </TableCell>
-                                            <TableCell component="th" scope="row" padding="none" className={classes.body}>
-                                                {n.name}
-                                            </TableCell>
-                                            <TableCell numeric className={classes.body}>{n.eventType}</TableCell>
-                                            <TableCell numeric className={classes.body}>{n.active}</TableCell>
-                                            <TableCell numeric className={classes.body}>{n.description}</TableCell>
-                                            <TableCell numeric className={classes.body}>
-                                                <Link
-                                                    to={`${this.urlHelper.owaPath()}/subscription`}>
-                                                    Edit
-                                                </Link>
-                                            </TableCell>
+            <div>
+                <Header
+                    isActive={true}
+                    createNewLink={`${this.urlHelper.owaPath()}/subscription`}
+                />
+                <div id="body-wrapper" className="body-wrapper">
+                    <Paper className={classes.root}>
+                        <SubscriptionTableToolbar numSelected={selected.length}/>
+                        <div className={classes.tableWrapper}>
+                            <Table className={classes.table} aria-labelledby="tableTitle">
+                                <SubscriptionTableHead
+                                    numSelected={selected.length}
+                                    order={order}
+                                    orderBy={orderBy}
+                                    onSelectAllClick={this.handleSelectAllClick}
+                                    onRequestSort={this.handleRequestSort}
+                                    rowCount={data.length}
+                                />
+                                <TableBody>
+                                    {data.slice(page * rowsPerPage, ((page * rowsPerPage) + rowsPerPage)).map((n) => {
+                                        const isSelected = this.isSelected(n.id);
+                                        return (
+                                            <TableRow
+                                                hover
+                                                onClick={event => this.handleClick(event, n.id)}
+                                                role="checkbox"
+                                                aria-checked={isSelected}
+                                                tabIndex={-1}
+                                                key={n.id}
+                                                selected={isSelected}
+                                            >
+                                                <TableCell padding="checkbox" className={classes.body}>
+                                                    <Checkbox checked={isSelected}/>
+                                                </TableCell>
+                                                <TableCell component="th" scope="row" padding="none"
+                                                           className={classes.body}>
+                                                    {n.name}
+                                                </TableCell>
+                                                <TableCell numeric className={classes.body}>{n.eventType}</TableCell>
+                                                <TableCell numeric className={classes.body}>{n.active}</TableCell>
+                                                <TableCell numeric className={classes.body}>{n.description}</TableCell>
+                                                <TableCell numeric className={classes.body}>
+                                                    <Link
+                                                        to={`${this.urlHelper.owaPath()}/subscription`}>
+                                                        Edit
+                                                    </Link>
+                                                </TableCell>
+                                            </TableRow>
+                                        );
+                                    })}
+                                    {emptyRows > 0 && (
+                                        <TableRow style={{height: 49 * emptyRows}}>
+                                            <TableCell colSpan={6}/>
                                         </TableRow>
-                                    );
-                                })}
-                                {emptyRows > 0 && (
-                                    <TableRow style={{ height: 49 * emptyRows }}>
-                                        <TableCell colSpan={6} />
-                                    </TableRow>
-                                )}
-                            </TableBody>
-                        </Table>
-                    </div>
-                    <TablePagination
-                        component="div"
-                        count={data.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        backIconButtonProps={{
-                            'aria-label': 'Previous Page',
-                        }}
-                        nextIconButtonProps={{
-                            'aria-label': 'Next Page',
-                        }}
-                        onChangePage={this.handleChangePage}
-                        onChangeRowsPerPage={this.handleChangeRowsPerPage}
-                    />
-                </Paper>
+                                    )}
+                                </TableBody>
+                            </Table>
+                        </div>
+                        <TablePagination
+                            component="div"
+                            count={data.length}
+                            rowsPerPage={rowsPerPage}
+                            page={page}
+                            backIconButtonProps={{
+                                'aria-label': 'Previous Page',
+                            }}
+                            nextIconButtonProps={{
+                                'aria-label': 'Next Page',
+                            }}
+                            onChangePage={this.handleChangePage}
+                            onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                        />
+                    </Paper>
+                </div>
             </div>
         );
     }

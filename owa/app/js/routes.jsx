@@ -17,7 +17,6 @@ import UrlHelper from '../utilities/urlHelper';
 const urlHelper = new UrlHelper();
 const Routes = () => (
   <div>
-    <Header />
     <Switch>
       <Route path={`${urlHelper.owaPath()}/index.html`} component={SubscriptionTable} />
       <Route path={`${urlHelper.owaPath()}/subscription`} component={Subscription} />
