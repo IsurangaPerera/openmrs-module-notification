@@ -39,21 +39,43 @@ class Subscription extends React.Component {
     constructor(props, context) {
         super(props, context);
 
-        this.subscription = null;
+        this.urlHelper = new UrlHelper();
+
+        this.subscription = (this.props.location.subscription === undefined) ? null :
+            this.props.location.subscription;
 
         this.state = {
             uuid: this.subscription != null ? this.subscription.uuid : null,
             name: this.subscription != null ? this.subscription.name : '',
             description: this.subscription != null && this.subscription.description != null ? this.subscription.description : '',
-            patients: this.props.location.patients,
-            event: this.subscription != null ? this.subscription.uuid : "",
+            patients: this.subscription != null && this.subscription.patients != null ?
+                this.subscription.patients : this.props.location.patients,
+            event: this.subscription != null ? this.subscription.event.uuid : "",
+            isUpdate: this.subscription != null,
             events: []
         };
 
+        if(this.subscription != null){
+            const self = this;
+            this.getEvents();
+            console.log(this.subscription);
+            axios
+                .get(`${this.urlHelper.apiBaseUrl()}/assignment?sId=${this.subscription.id}`)
+                .then(function(response) {
+                    let patients = [];
+                    console.log(response.data.results);
+                    response.data.results.forEach((spa) => {
+                        patients.push({pid:spa.patient.uuid, name:spa.patient.person.display});
+                    });
+                    self.setState({patients:patients});
+                })
+                .catch(function(errorResponse) {
+                    console.log(errorResponse);
+                });
+        }
+
         this.state = (this.props.location.state === undefined)? this.state : JSON.parse(this.props.location.state);
         this.state.patients = this.props.location.patients;
-
-        this.urlHelper = new UrlHelper();
     }
 
     saveSubscription = () => {
@@ -70,15 +92,20 @@ class Subscription extends React.Component {
             i = i+1;
         });
 
+        let path = `${this.urlHelper.apiBaseUrl()}/notification`;
+        if(this.state.isUpdate) {
+            path = `${path}/${this.state.uuid}`
+        }
+
         axios({
             method: 'post',
-            url: this.urlHelper.apiBaseUrl() + "/notification",
+            url: path,
             headers: {'Content-Type': 'application/json'},
             data: parameters
         })
             .then(function(response) {
                 self.props.history.goBack();
-                self.props.history.goBack();
+                if(!self.state.isUpdate) self.props.history.goBack();
             })
             .catch(function(errorResponse) {
                 console.log(errorResponse);
@@ -110,14 +137,14 @@ class Subscription extends React.Component {
         });
     };
 
+    patientHandler = (e) => {
+        this.setState({patients: this.state.patients.splice(e, 1)});
+    };
+
     render() {
+        console.log(this.state.patients)
         this.newTo = {
             pathname: `${this.urlHelper.owaPath()}/edit`,
-            state: JSON.stringify(this.state)
-        };
-
-        this.newFrom = {
-            pathname: `${this.urlHelper.owaPath()}/index.html`,
             state: JSON.stringify(this.state)
         };
 
@@ -171,9 +198,10 @@ class Subscription extends React.Component {
                                 <Grid item xs={4} />
 
                                 <Grid item xs={4} />
-                                { (this.props.location.patients === undefined) ? <Grid item xs={4} /> :
+                                { (this.state.patients === undefined) ? <Grid item xs={4} /> :
                                     <Grid item xs={4}>
                                         <ChipsArray
+                                            patientHandler={(e) => {this.patientHandler(e)}}
                                             chipData={() => {
                                                 let data = [];
                                                 let i = 0;

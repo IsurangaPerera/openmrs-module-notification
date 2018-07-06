@@ -25,4 +25,13 @@ public interface SubscriptionManagementService extends OpenmrsService {
 
 	@Authorized(value = { "Edit Subscriptions" }, requireAll = true)
 	SubscriptionPatientAssignment saveSubscriptionPatientAssignment(SubscriptionPatientAssignment spa);
+
+	@Authorized(value = { "Get Subscriptions" }, requireAll = true)
+	Subscription getSubscriptionByUuid(String uuid);
+
+	@Authorized(value = { "Get Subscriptions" }, requireAll = true)
+	List<SubscriptionPatientAssignment> getAllSubscriptionPatientAssignments(Integer sId);
+
+	@Authorized(value = { "Edit Subscriptions" }, requireAll = true)
+    void deleteSubscriptionPatientAssignment(Integer id);
 }
