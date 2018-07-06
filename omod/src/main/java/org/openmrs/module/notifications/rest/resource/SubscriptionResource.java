@@ -5,8 +5,8 @@ import org.openmrs.User;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.notifications.entity.Event;
-import org.openmrs.module.notifications.entity.SubscriptionPatientAssignment;
 import org.openmrs.module.notifications.entity.Subscription;
+import org.openmrs.module.notifications.entity.SubscriptionPatientAssignment;
 import org.openmrs.module.notifications.service.EventManagementService;
 import org.openmrs.module.notifications.service.SubscriptionManagementService;
 import org.openmrs.module.webservices.rest.SimpleObject;
@@ -26,7 +26,6 @@ import org.openmrs.module.webservices.rest.web.response.ConversionException;
 import org.openmrs.module.webservices.rest.web.response.IllegalPropertyException;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
-import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -66,8 +65,8 @@ public class SubscriptionResource extends DelegatingCrudResource<Subscription> {
     }
 
     @Override
-    public Subscription getByUniqueId(String s) {
-        return null;
+    public Subscription getByUniqueId(String uuid) {
+        return Context.getService(SubscriptionManagementService.class).getSubscriptionByUuid(uuid);
     }
 
     @Override
@@ -81,6 +80,20 @@ public class SubscriptionResource extends DelegatingCrudResource<Subscription> {
         LinkedHashMap<String, String> patients = propertiesToCreate.get("patients");
 
         this.constructSubscriptionPatientAssignment(subscription, patients);
+
+        return ConversionUtil.convertToRepresentation(subscription, context.getRepresentation());
+    }
+
+    @Override
+    public Object update(String uuid, SimpleObject propertiesToUpdate, RequestContext context) throws ResponseException {
+        Subscription subscription = this.constructSubscription(uuid, propertiesToUpdate);
+        Context.getService(SubscriptionManagementService.class).saveSubscription(subscription);
+        if (propertiesToUpdate.get("patients") != null) {
+            LinkedHashMap<String, String> patients = propertiesToUpdate.get("patients");
+            Context.getService(SubscriptionManagementService.class)
+                    .deleteSubscriptionPatientAssignment(subscription.getId());
+            this.constructSubscriptionPatientAssignment(subscription, patients);
+        }
 
         return ConversionUtil.convertToRepresentation(subscription, context.getRepresentation());
     }
@@ -121,18 +134,17 @@ public class SubscriptionResource extends DelegatingCrudResource<Subscription> {
         User user = Context.getAuthenticatedUser();
 
         if (uuid != null) {
-            subscription = new Subscription();
-            /*subscription = Context.getService(SubscriptionManagementService.class).getSubscriptionByUuid(uuid);
+            subscription = Context.getService(SubscriptionManagementService.class).getSubscriptionByUuid(uuid);
             if (subscription == null)
                 throw new IllegalPropertyException("Subscription not exist");
 
             subscription.setName((String) properties.get("name"));
             subscription.setDescription((String) properties.get("description"));
             Event event = Context.getService(EventManagementService.class)
-                    .getEventById(Integer.parseInt((String) properties.get("eventId")));
+                    .getEventByUuid((String) properties.get("eventId"));
             if (event == null)
                 throw new IllegalPropertyException("Event not exist");
-            subscription.setEvent(event);*/
+            subscription.setEvent(event);
 
         } else {
             subscription = new Subscription();

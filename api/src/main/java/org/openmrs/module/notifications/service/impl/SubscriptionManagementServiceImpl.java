@@ -31,4 +31,19 @@ public class SubscriptionManagementServiceImpl extends BaseOpenmrsService implem
 	public SubscriptionPatientAssignment saveSubscriptionPatientAssignment(SubscriptionPatientAssignment spa) {
 		return subscriptionManagementDao.saveSubscriptionPatientAssignment(spa);
 	}
+
+	@Override
+	public Subscription getSubscriptionByUuid(String uuid) {
+		return subscriptionManagementDao.getSubscriptionByUuid(uuid);
+	}
+
+    @Override
+    public List<SubscriptionPatientAssignment> getAllSubscriptionPatientAssignments(Integer sId) {
+        return subscriptionManagementDao.getAllSubscriptionPatientAssignments(sId);
+    }
+
+	@Override
+	public void deleteSubscriptionPatientAssignment(Integer sId) {
+		subscriptionManagementDao.deleteAllSubscriptionPatientAssignments(sId);
+	}
 }

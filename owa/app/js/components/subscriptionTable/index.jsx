@@ -59,6 +59,7 @@ class SubscriptionTable extends React.Component {
             })
             .then(function (response) {
                 let subscriptions = [];
+                self.setState({subscriptions: response.data.results});
                 response.data.results.forEach((subscription) => {
                     subscriptions.push(
                         createData(subscription.name, subscription.event.name, "Yes",
@@ -129,6 +130,7 @@ class SubscriptionTable extends React.Component {
             orderBy: 'name',
             selected: [],
             data: [].sort((a, b) => (a.name < b.name ? -1 : 1)),
+            subscriptions: [],
             page: 0,
             rowsPerPage: 5,
         };
@@ -188,7 +190,10 @@ class SubscriptionTable extends React.Component {
                                                 <TableCell numeric className={classes.body}>{n.description}</TableCell>
                                                 <TableCell numeric className={classes.body}>
                                                     <Link
-                                                        to={`${this.urlHelper.owaPath()}/subscription`}>
+                                                        to={{
+                                                            pathname: `${this.urlHelper.owaPath()}/subscription`,
+                                                            subscription: this.state.subscriptions[n.id-1]
+                                                        }}>
                                                         Edit
                                                     </Link>
                                                 </TableCell>

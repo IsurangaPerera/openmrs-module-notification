@@ -1,4 +1,3 @@
-import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { withStyles } from "@material-ui/core/styles";
 import { lighten } from "@material-ui/core/styles/colorManipulator";
@@ -6,7 +5,6 @@ import React from 'react';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import AddIcon from '@material-ui/icons/Add';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';

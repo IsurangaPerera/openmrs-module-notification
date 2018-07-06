@@ -19,4 +19,10 @@ public interface SubscriptionManagementDao {
 	List getAllSubscriptions(User user);
 
     SubscriptionPatientAssignment saveSubscriptionPatientAssignment(SubscriptionPatientAssignment spa);
+
+    Subscription getSubscriptionByUuid(String uuid);
+
+	List getAllSubscriptionPatientAssignments(Integer sId);
+
+    void deleteAllSubscriptionPatientAssignments(Integer sId);
 }

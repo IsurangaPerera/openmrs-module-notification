@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Chip from '@material-ui/core/Chip';
 import Paper from '@material-ui/core/Paper';
-import UrlHelper from "../../../utilities/urlHelper";
 
 const styles = theme => ({
     root: {
@@ -32,6 +31,7 @@ class ChipsArray extends React.Component {
         const chipToDelete = chipData.indexOf(data);
         chipData.splice(chipToDelete, 1);
         this.setState({ chipData });
+        this.props.patientHandler(chipToDelete);
     };
 
     render() {
@@ -54,7 +54,8 @@ class ChipsArray extends React.Component {
 
 ChipsArray.propTypes = {
     classes: PropTypes.object.isRequired,
-    chipData: PropTypes.func.isRequired
+    chipData: PropTypes.func.isRequired,
+    patientHandler: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(ChipsArray);
