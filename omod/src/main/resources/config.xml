@@ -30,4 +30,11 @@
         SubscriptionPatientAssignment.hbm.xml
     </mappingFiles>
 
+    <!-- Adds link to admin page -->
+    <extension>
+        <point>org.openmrs.admin.list</point>
+        <class>org.openmrs.module.notifications.extension.html.AdminList</class>
+    </extension>
+
+
 </module>
