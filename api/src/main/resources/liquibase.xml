@@ -299,4 +299,26 @@
 
     </changeSet>
 
+    <changeSet author="Isuranga Perera" id="subscription_management_module_08072018_9">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">select count(*) from event where event_name='Patient Visit'</sqlCheck>
+        </preConditions>
+        <insert tableName="event">
+            <column name="event_name" value="Patient Visit"/>
+            <column name="uuid" valueComputed="uuid()"/>
+            <column name="date_created" value="2018-07-08 00:00:00"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Isuranga Perera" id="subscription_management_module_08072018_10">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">select count(*) from event where event_name='Lab Result'</sqlCheck>
+        </preConditions>
+        <insert tableName="event">
+            <column name="event_name" value="Lab Result"/>
+            <column name="uuid" valueComputed="uuid()"/>
+            <column name="date_created" value="2018-07-08 00:00:00"/>
+        </insert>
+    </changeSet>
+
 </databaseChangeLog>
