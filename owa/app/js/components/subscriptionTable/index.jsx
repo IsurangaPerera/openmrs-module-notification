@@ -15,14 +15,6 @@ import UrlHelper from '../../../utilities/urlHelper';
 import axios from "axios/index";
 import Header from "../header";
 
-let counter = 0;
-
-function createData(name, eventType, active, description, op) {
-    counter += 1;
-    return {
-        id: counter, name, eventType, active, description, op,
-    };
-}
 
 const styles = theme => ({
     root: {
@@ -49,6 +41,30 @@ const styles = theme => ({
 });
 
 class SubscriptionTable extends React.Component {
+    constructor(props, context) {
+        super(props, context);
+
+        this.state = {
+            order: 'asc',
+            orderBy: 'name',
+            selected: [],
+            data: [].sort((a, b) => (a.name < b.name ? -1 : 1)),
+            subscriptions: [],
+            page: 0,
+            rowsPerPage: 5,
+        };
+
+        this.urlHelper = new UrlHelper();
+        this.counter = 0;
+    }
+
+    createData = (name, eventType, active, description, op) => {
+        this.counter += 1;
+        return {
+            id: this.counter, name, eventType, active, description, op,
+        };
+    };
+
     handleOnPageLoad = () => {
         const self = this;
         axios
@@ -62,7 +78,7 @@ class SubscriptionTable extends React.Component {
                 self.setState({subscriptions: response.data.results});
                 response.data.results.forEach((subscription) => {
                     subscriptions.push(
-                        createData(subscription.name, subscription.event.name, "Yes",
+                        self.createData(subscription.name, subscription.event.name, "Yes",
                             subscription.description)
                     );
                 });
@@ -72,6 +88,7 @@ class SubscriptionTable extends React.Component {
                 console.log(errorResponse);
             });
     };
+
     handleRequestSort = (event, property) => {
         const orderBy = property;
         let order = 'desc';
@@ -87,6 +104,7 @@ class SubscriptionTable extends React.Component {
 
         this.setState({data, order, orderBy});
     };
+
     handleSelectAllClick = (event, checked) => {
         if (checked) {
             this.setState({selected: this.state.data.map(n => n.id)});
@@ -94,6 +112,7 @@ class SubscriptionTable extends React.Component {
         }
         this.setState({selected: []});
     };
+
     handleClick = (event, id) => {
         const {selected} = this.state;
         const selectedIndex = selected.indexOf(id);
@@ -114,30 +133,20 @@ class SubscriptionTable extends React.Component {
 
         this.setState({selected: newSelected});
     };
+
     handleChangePage = (event, page) => {
         this.setState({page});
     };
+
     handleChangeRowsPerPage = (event) => {
         this.setState({rowsPerPage: event.target.value});
     };
+
     isSelected = id => this.state.selected.indexOf(id) !== -1;
 
-    constructor(props, context) {
-        super(props, context);
-
-        this.state = {
-            order: 'asc',
-            orderBy: 'name',
-            selected: [],
-            data: [].sort((a, b) => (a.name < b.name ? -1 : 1)),
-            subscriptions: [],
-            page: 0,
-            rowsPerPage: 5,
-        };
-
-        this.urlHelper = new UrlHelper();
+    componentDidMount = () => {
         this.handleOnPageLoad();
-    }
+    };
 
     render() {
         const {classes} = this.props;
@@ -145,7 +154,6 @@ class SubscriptionTable extends React.Component {
             data, order, orderBy, selected, rowsPerPage, page,
         } = this.state;
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, (data.length - (page * rowsPerPage)));
-
         return (
             <div>
                 <Header
