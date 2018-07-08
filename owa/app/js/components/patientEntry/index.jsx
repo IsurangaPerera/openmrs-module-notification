@@ -1,5 +1,5 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -9,11 +9,13 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import axios from 'axios';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 import PatientTableToolbar from "./PatientTableToolbar";
 import PatientTableHead from "./PatientTableHead";
 import UrlHelper from "../../../utilities/urlHelper";
-import {Redirect} from "react-router-dom";
-import Header from "../header";
 
 let counter = 0;
 function createData(pid, name, gender, age, reg) {
@@ -42,25 +44,15 @@ const styles = theme => ({
             'sans-serif',
         ].join(','),
     },
+    flex: {
+        flex: 1,
+    },
+    appBar: {
+        position: 'relative',
+    },
 });
 
 class PatientTable extends React.Component {
-    constructor(props, context) {
-        super(props, context);
-
-        this.state = {
-            order: 'asc',
-            orderBy: 'name',
-            selected: [],
-            data: [],
-            selectedPatients: [],
-            page: 0,
-            rowsPerPage: 5,
-            toSubscription: false
-        };
-        this.urlHelper = new UrlHelper();
-    }
-
     handleOnSearch = (e) => {
         const self = this;
         let searchTerm = (e.match(/\S+/g) || []).join('+');
@@ -88,16 +80,6 @@ class PatientTable extends React.Component {
             });
     };
 
-    handleAddPatients = (e) => {
-        let selectedPatients = [];
-        let s = this.state.selected.length;
-        this.state.selected.forEach((i)=> {
-            selectedPatients.push(this.state.data[i%s]);
-        });
-        this.setState({ selectedPatients: selectedPatients });
-        this.setState({ toSubscription: true });
-    };
-
     handleRequestSort = (event, property) => {
 
         const orderBy = property;
@@ -119,7 +101,6 @@ class PatientTable extends React.Component {
 
         this.setState({ data, order, orderBy });
     };
-
     handleSelectAllClick = (event, checked) => {
         if (checked) {
             this.setState({ selected: this.state.data.map(n => n.id) });
@@ -127,7 +108,6 @@ class PatientTable extends React.Component {
         }
         this.setState({ selected: [] });
     };
-
     handleClick = (event, id) => {
         const { selected } = this.state;
         const selectedIndex = selected.indexOf(id);
@@ -148,27 +128,31 @@ class PatientTable extends React.Component {
 
         this.setState({ selected: newSelected });
     };
-
     handleChangePage = (event, page) => {
         this.setState({ page });
     };
-
     handleChangeRowsPerPage = (event) => {
         this.setState({ rowsPerPage: event.target.value });
     };
-
     isSelected = id => this.state.selected.indexOf(id) !== -1;
 
-    render() {
-        const newTo = {
-            pathname: `${this.urlHelper.owaPath()}/subscription`,
-            state: this.props.location.state,
-            patients: this.state.selectedPatients
-        };
+    constructor(props, context) {
+        super(props, context);
 
-        if (this.state.toSubscription === true) {
-            return <Redirect to={newTo} />
-        }
+        this.state = {
+            order: 'asc',
+            orderBy: 'name',
+            selected: [],
+            data: [],
+            selectedPatients: [],
+            page: 0,
+            rowsPerPage: 5,
+            toSubscription: false
+        };
+        this.urlHelper = new UrlHelper();
+    }
+
+    render() {
         const { classes } = this.props;
         const {
             data, order, orderBy, selected, rowsPerPage, page,
@@ -177,11 +161,19 @@ class PatientTable extends React.Component {
 
         return (
             <div>
-                <Header/>
+                <AppBar className={classes.appBar} color="default">
+                    <Toolbar>
+                        <IconButton color="inherit" onClick={this.props.handleClose} aria-label="Close">
+                            <CloseIcon />
+                        </IconButton>
+                    </Toolbar>
+                </AppBar>
                 <div id="body-wrapper" className="body-wrapper">
                     <Paper className={classes.root}>
                         <PatientTableToolbar
-                            handleAddPatients={this.handleAddPatients}
+                            handleAddPatients={
+                                (s, d) => {this.props.handleAddPatients(this.state.selected, this.state.data)}
+                            }
                             handleOnSearch={this.handleOnSearch}
                             numSelected={selected.length}
                         />
@@ -252,6 +244,8 @@ class PatientTable extends React.Component {
 
 PatientTable.propTypes = {
     classes: PropTypes.object.isRequired,
+    handleClose: PropTypes.func.isRequired,
+    handleAddPatients: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(PatientTable);

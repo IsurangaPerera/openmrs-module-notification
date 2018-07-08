@@ -71,7 +71,8 @@ class PatientTableToolbar extends React.Component {
                 <div className={this.props.classes.actions}>
                     {this.props.numSelected > 0 ? (
                         <Tooltip title="Add Patients">
-                            <IconButton aria-label="Add Patients" onClick={(e)=>{this.props.handleAddPatients(e)}}>
+                            <IconButton aria-label="Add Patients"
+                                        onClick={()=>{this.props.handleAddPatients([], [])}}>
                                 <AddIcon />
                             </IconButton>
                         </Tooltip>

@@ -4,13 +4,15 @@ import {withStyles} from "@material-ui/core/styles/index";
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
-import { Link } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
+import Dialog from '@material-ui/core/Dialog';
+import Slide from '@material-ui/core/Slide';
 import ChipsArray from './Chips';
 import UrlHelper from "../../../utilities/urlHelper";
 import axios from "axios";
 import Header from "../header";
+import PatientEntry from '../patientEntry';
 
 const styles = theme => ({
     root: {
@@ -35,6 +37,10 @@ const styles = theme => ({
     },
 });
 
+function Transition(props) {
+    return <Slide direction="up" {...props} />;
+}
+
 class Subscription extends React.Component {
     constructor(props, context) {
         super(props, context);
@@ -48,22 +54,22 @@ class Subscription extends React.Component {
             uuid: this.subscription != null ? this.subscription.uuid : null,
             name: this.subscription != null ? this.subscription.name : '',
             description: this.subscription != null && this.subscription.description != null ? this.subscription.description : '',
-            patients: this.subscription != null && this.subscription.patients != null ?
-                this.subscription.patients : this.props.location.patients,
+            patients: null,
             event: this.subscription != null ? this.subscription.event.uuid : "",
             isUpdate: this.subscription != null,
-            events: []
+            events: [],
+            open: false
         };
+    }
 
+    componentWillMount = () => {
         if(this.subscription != null){
             const self = this;
             this.getEvents();
-            console.log(this.subscription);
             axios
                 .get(`${this.urlHelper.apiBaseUrl()}/assignment?sId=${this.subscription.id}`)
                 .then(function(response) {
                     let patients = [];
-                    console.log(response.data.results);
                     response.data.results.forEach((spa) => {
                         patients.push({pid:spa.patient.uuid, name:spa.patient.person.display});
                     });
@@ -73,10 +79,24 @@ class Subscription extends React.Component {
                     console.log(errorResponse);
                 });
         }
+    };
 
-        this.state = (this.props.location.state === undefined)? this.state : JSON.parse(this.props.location.state);
-        this.state.patients = this.props.location.patients;
-    }
+    handleClickOpen = () => {
+        this.setState({ open: true });
+    };
+
+    handleClose = () => {
+        this.setState({ open: false });
+    };
+
+    handleAddPatients = (selected, data) => {
+        let selectedPatients = [];
+        let s = selected.length;
+        selected.forEach((i)=> {
+            selectedPatients.push(data[i%s]);
+        });
+        this.setState({ patients: selectedPatients });
+    };
 
     saveSubscription = () => {
         let parameters = {};
@@ -105,7 +125,6 @@ class Subscription extends React.Component {
         })
             .then(function(response) {
                 self.props.history.goBack();
-                if(!self.state.isUpdate) self.props.history.goBack();
             })
             .catch(function(errorResponse) {
                 console.log(errorResponse);
@@ -142,17 +161,23 @@ class Subscription extends React.Component {
     };
 
     render() {
-        console.log(this.state.patients)
-        this.newTo = {
-            pathname: `${this.urlHelper.owaPath()}/edit`,
-            state: JSON.stringify(this.state)
-        };
-
         if(this.state.events.length === 0) this.getEvents();
         const { classes } = this.props;
         return (
             <div>
                 <Header/>
+                <Dialog
+                    fullScreen
+                    open={this.state.open}
+                    onClose={this.handleClose}
+                    TransitionComponent={Transition}
+                >
+                    <PatientEntry
+                        handleClose={this.handleClose}
+                        handleAddPatients={this.handleAddPatients}
+                    />
+                </Dialog>
+
                 <div id="body-wrapper" className="body-wrapper">
                     <Paper className={classes.root}>
                         <form className={classes.container} noValidate autoComplete="off">
@@ -198,7 +223,7 @@ class Subscription extends React.Component {
                                 <Grid item xs={4} />
 
                                 <Grid item xs={4} />
-                                { (this.state.patients === undefined) ? <Grid item xs={4} /> :
+                                { (this.state.patients === null) ? <Grid item xs={4} /> :
                                     <Grid item xs={4}>
                                         <ChipsArray
                                             patientHandler={(e) => {this.patientHandler(e)}}
@@ -220,13 +245,10 @@ class Subscription extends React.Component {
                                 <Grid item xs={4} />
 
                                 <Grid item xs={4} />
-                                <Grid item xs={2}>
-                                    <Link
-                                        to={this.newTo}>
-                                        Add Patient(s)
-                                    </Link>
+                                <Grid item xs={4}>
+                                    <Button onClick={this.handleClickOpen}>Add Patient(s)</Button>
                                 </Grid>
-                                <Grid item xs={6} />
+                                <Grid item xs={4} />
 
                                 <Grid item xs={4} />
                                 <Grid item xs={4}>
@@ -245,7 +267,7 @@ class Subscription extends React.Component {
 
                                 <Grid item xs={6} />
                                 <Grid item xs={1}>
-                                    <Button size="large" className={classes.button}>
+                                    <Button size="large" className={classes.button} onClick={this.props.history.goBack}>
                                         Close
                                     </Button>
                                 </Grid>
