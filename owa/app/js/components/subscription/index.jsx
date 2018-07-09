@@ -60,6 +60,8 @@ class Subscription extends React.Component {
             events: [],
             open: false
         };
+
+        this.patientIndex = [];
     }
 
     componentWillMount = () => {
@@ -71,6 +73,7 @@ class Subscription extends React.Component {
                 .then(function(response) {
                     let patients = [];
                     response.data.results.forEach((spa) => {
+                        self.patientIndex.push(spa.patient.uuid);
                         patients.push({pid:spa.patient.uuid, name:spa.patient.person.display});
                     });
                     self.setState({patients:patients});
@@ -90,10 +93,14 @@ class Subscription extends React.Component {
     };
 
     handleAddPatients = (selected, data) => {
-        let selectedPatients = [];
+        let selectedPatients = (this.state.patients === null)? [] : this.state.patients;
         let s = selected.length;
         selected.forEach((i)=> {
-            selectedPatients.push(data[i%s]);
+            let patient = data[i%s];
+            if(!this.patientIndex.includes(patient.pid)) {
+                this.patientIndex.push(patient.pid);
+                selectedPatients.push(patient);
+            }
         });
         this.setState({ patients: selectedPatients });
     };
@@ -107,6 +114,7 @@ class Subscription extends React.Component {
         const self = this;
 
         let  i = 0;
+        //console.log(this.state.patients);
         this.state.patients.forEach((p) => {
             parameters.patients[i] = p.pid;
             i = i+1;
@@ -157,7 +165,21 @@ class Subscription extends React.Component {
     };
 
     patientHandler = (e) => {
+        this.patientIndex.splice(this.patientIndex.indexOf(this.state.patients[e].pid));
         this.setState({patients: this.state.patients.splice(e, 1)});
+    };
+
+    chipDataHandler = () => {
+        let data = [];
+        let i = 0;
+        this.state.patients.forEach((p) => {
+            let obj = {};
+            obj.key = i;
+            obj.label = p.name;
+            i = i + 1;
+            data.push(obj);
+        });
+        return data;
     };
 
     render() {
@@ -227,18 +249,7 @@ class Subscription extends React.Component {
                                     <Grid item xs={4}>
                                         <ChipsArray
                                             patientHandler={(e) => {this.patientHandler(e)}}
-                                            chipData={() => {
-                                                let data = [];
-                                                let i = 0;
-                                                this.state.patients.forEach((p) => {
-                                                    let obj = {};
-                                                    obj.key = i;
-                                                    obj.label = p.name;
-                                                    i = i + 1;
-                                                    data.push(obj);
-                                                });
-                                                return data;
-                                            }}
+                                            chipData={this.chipDataHandler}
                                         />
                                     </Grid>
                                 }

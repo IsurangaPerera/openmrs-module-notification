@@ -19,12 +19,14 @@ const styles = theme => ({
 class ChipsArray extends React.Component {
     constructor(props, context) {
         super(props, context);
-        let chipData = this.props.chipData();
         this.state = {
-            chipData: (chipData === undefined)? [] : chipData,
+            chipData: this.props.chipData(),
         };
     }
 
+    componentWillUpdate = () => {
+        this.state.chipData = this.props.chipData();
+    };
 
     handleDelete = data => () => {
         const chipData = this.state.chipData;
