@@ -1,6 +1,7 @@
 import React from 'react';
-import {withStyles} from '@material-ui/core/styles';
+import axios from 'axios';
 import PropTypes from 'prop-types';
+import {withStyles} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -8,11 +9,12 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
-import axios from 'axios';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 import PatientTableToolbar from "./PatientTableToolbar";
 import PatientTableHead from "./PatientTableHead";
 import UrlHelper from "../../../utilities/urlHelper";
@@ -161,19 +163,30 @@ class PatientTable extends React.Component {
 
         return (
             <div>
-                <AppBar className={classes.appBar} color="default">
+                <AppBar className={classes.appBar} color="primary">
                     <Toolbar>
                         <IconButton color="inherit" onClick={this.props.handleClose} aria-label="Close">
                             <CloseIcon />
                         </IconButton>
+                        <Typography variant="title" color="inherit" className={classes.flex}>
+                            Add Patient(s)
+                        </Typography>
+                        <Button color="inherit"
+                                onClick={() => {
+                                    if (this.state.selected.length === 0)
+                                        alert("No patients selected");
+                                    else
+                                        this.props.handleAddPatients(this.state.selected, this.state.data)
+                                    }
+                                }
+                        >
+                            Save
+                        </Button>
                     </Toolbar>
                 </AppBar>
                 <div id="body-wrapper" className="body-wrapper">
                     <Paper className={classes.root}>
                         <PatientTableToolbar
-                            handleAddPatients={
-                                (s, d) => {this.props.handleAddPatients(this.state.selected, this.state.data)}
-                            }
                             handleOnSearch={this.handleOnSearch}
                             numSelected={selected.length}
                         />
