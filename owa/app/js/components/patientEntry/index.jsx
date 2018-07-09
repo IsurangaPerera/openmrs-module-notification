@@ -55,6 +55,23 @@ const styles = theme => ({
 });
 
 class PatientTable extends React.Component {
+    constructor(props, context) {
+        super(props, context);
+
+        this.state = {
+            order: 'asc',
+            orderBy: 'name',
+            selected: [],
+            data: [],
+            selectedPatients: [],
+            page: 0,
+            rowsPerPage: 5,
+            toSubscription: false
+        };
+        this.urlHelper = new UrlHelper();
+        this.counter = 0;
+    }
+
     handleOnSearch = (e) => {
         const self = this;
         let searchTerm = (e.match(/\S+/g) || []).join('+');
@@ -70,7 +87,7 @@ class PatientTable extends React.Component {
                 let patients = [];
                 response.data.results.forEach((patient) => {
                     patients.push(
-                        createData(patient.uuid, patient.person.display, patient.person.gender,
+                        self.createData(patient.uuid, patient.person.display, patient.person.gender,
                             patient.person.age, patient.auditInfo.dateCreated)
                     );
                 });
@@ -138,21 +155,12 @@ class PatientTable extends React.Component {
     };
     isSelected = id => this.state.selected.indexOf(id) !== -1;
 
-    constructor(props, context) {
-        super(props, context);
-
-        this.state = {
-            order: 'asc',
-            orderBy: 'name',
-            selected: [],
-            data: [],
-            selectedPatients: [],
-            page: 0,
-            rowsPerPage: 5,
-            toSubscription: false
+    createData = (pid, name, gender, age, reg) => {
+        this.counter += 1;
+        return {
+            id: this.counter, pid, name, gender, age, reg,
         };
-        this.urlHelper = new UrlHelper();
-    }
+    };
 
     render() {
         const { classes } = this.props;
@@ -176,7 +184,10 @@ class PatientTable extends React.Component {
                                     if (this.state.selected.length === 0)
                                         alert("No patients selected");
                                     else
-                                        this.props.handleAddPatients(this.state.selected, this.state.data)
+                                        this.props.handleAddPatients(this.state.selected, this.state.data);
+                                        this.setState({selected: []});
+                                        this.setState({data: []});
+                                        this.setState({selectedPatients: []});
                                     }
                                 }
                         >
@@ -253,7 +264,7 @@ class PatientTable extends React.Component {
             </div>
         );
     }
-}
+};
 
 PatientTable.propTypes = {
     classes: PropTypes.object.isRequired,
