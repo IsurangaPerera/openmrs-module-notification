@@ -165,6 +165,9 @@ const webpackConfig = {
   },
   devtool,
   target,
+    node: {
+        fs: "empty"
+    },
   output: {
     path: outputPath,
     filename: `[name]${outputFile}`,
@@ -194,6 +197,9 @@ const webpackConfig = {
     }, {
 	    test: /\.html$/,
 	    loader: 'html',
+    }, {
+        test: /\.json$/,
+        loader: 'json-loader'
     }],
   },
   resolve: {

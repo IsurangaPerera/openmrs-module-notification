@@ -8,8 +8,8 @@
  */
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import Header from './components/header';
 import SubscriptionTable from './components/subscriptionTable';
+import NotificationsTable from './components/notificationsTable';
 import Subscription from './components/subscription';
 import PatientEntry from './components/patientEntry';
 import UrlHelper from '../utilities/urlHelper';
@@ -21,6 +21,7 @@ const Routes = () => (
       <Route path={`${urlHelper.owaPath()}/index.html`} component={SubscriptionTable} />
       <Route path={`${urlHelper.owaPath()}/subscription`} component={Subscription} />
       <Route path={`${urlHelper.owaPath()}/edit`} component={PatientEntry} />
+      <Route path={`${urlHelper.owaPath()}/notifications`} component={NotificationsTable} />
     </Switch>
   </div>
 );

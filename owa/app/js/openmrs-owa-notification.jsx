@@ -14,16 +14,26 @@ import { Provider } from 'react-redux';
 import createStore from './redux-store';
 import routes from './routes';
 
-import '../../node_modules/toastr/build/toastr.css';
+import axiosInstance from "./config";
 
 const store = createStore();
+const contextPath = window.location.href.split('/')[3];
+const apiBaseUrl = `/${contextPath}/ws/rest/notifications`;
+
+let url = '';
+
+axiosInstance.get(`appui/session`)
+    .then((response) => {
+        url = `/${apiBaseUrl}/${response.data.user.uuid}`;
+
+    });
 
 render(
-  (
-    <Provider store={store}>
-      <BrowserRouter>
-        {routes(store)}
-      </BrowserRouter>
-    </Provider>
-  ), document.getElementById('app'),
+    (
+        <Provider store={store}>
+            <BrowserRouter>
+                {routes(store)}
+            </BrowserRouter>
+        </Provider>
+    ), document.getElementById('app'),
 );
