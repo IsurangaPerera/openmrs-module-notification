@@ -5,6 +5,9 @@ import Badge from '@material-ui/core/Badge';
 import MailIcon from '@material-ui/icons/Mail';
 import IconButton from '@material-ui/core/IconButton';
 import {withStyles} from "@material-ui/core/styles/index";
+import Websocket from 'react-websocket';
+import {Redirect} from "react-router";
+import UrlHelper from "../../../utilities/urlHelper";
 
 const styles = theme => ({
     margin: {
@@ -16,6 +19,23 @@ const styles = theme => ({
 });
 
 class View extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            count: 0,
+            notifications: [],
+            redirect: false
+        };
+        this.urlHelper = new UrlHelper();
+    }
+
+    handleData = (data) => {
+        console.log(data);
+        this.setState({count: this.state.count+1});
+        this.state.notifications.push(JSON.parse(data));
+        this.setState({notifications: this.state.notifications});
+    };
+
     render() {
         const { classes } = this.props;
         return (
@@ -33,10 +53,16 @@ class View extends React.Component {
                         }
                     </ul>
                     <div className="reg-header-right fr">
-                        <IconButton aria-label="4 pending messages" className={classes.margin}>
-                            <Badge badgeContent={2} color="secondary">
-                                <MailIcon />
-                            </Badge>
+                        <IconButton aria-label="4 pending messages" className={classes.margin}
+                                    onClick={()=>this.setState({redirect: true})}>
+                            {
+                                (this.state.count > 0) ?
+                                    <Badge badgeContent={this.state.count} color="secondary">
+                                        <MailIcon />
+                                    </Badge>
+                                    :
+                                    <MailIcon />
+                            }
                         </IconButton>
                         <button className="btn-user-info fr">
                             <i className="fa fa-user-md fa-white small"/>
@@ -56,6 +82,12 @@ class View extends React.Component {
                         </ul>
                     </div>
                 </header>
+                <Websocket url='ws://localhost:4567/notifications'
+                           onMessage={this.handleData.bind(this)}/>
+                {
+                    this.state.redirect? <Redirect to={{pathname: `${this.urlHelper.owaPath()}/notifications`,
+                     notifications: this.state.notifications}}/> : null
+                }
             </div>
         );
     }
